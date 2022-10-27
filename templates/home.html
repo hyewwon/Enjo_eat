@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheets %}
+<style>
+  #comment{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    width:35%
+  }
+</style>
+{% endblock stylesheets %}
+{% block content %}
+<section id="hero-animated" class="hero-animated d-flex align-items-center">
+    <div class="container d-flex flex-column justify-content-center align-items-center text-center position-relative" data-aos="zoom-out">
+      <img src="{% static 'assets/img/home.png' %}" class="img-fluid animated" style="width:200px;">
+      <h2>Welcome to <span>Enjo_eat</span></h2>
+      <p>메뉴를 선택하기 쉬워져요</p>
+      <div class="d-flex">
+        <a href="{% url 'Eatery_selection:group_select' %}" class="btn-get-started scrollto" style="margin-right:10px;">음식점 고르기</a>
+        </div>
+      </div>
+    </section>
+    <!-- ======= About Section ======= -->
+    <hr>
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+        
+        <div class="section-header">
+          <p class="mb-2">로그인 후</p>
+          <p class="mb-2">음식점을 추가해서 더 다양한 폭으로 골라보세요</p>
+          <p class="mb-2">&</p>
+          <p class="mb-2">다녀온 음식점을 평가해 보세요</p>
+          <p>↓</p>
+          <a href="{% url 'Eatery:group_manage' %}" class="btn btn-outline-dark mt-4">등록된 음식점 보러가기</a>
+        </div>
+        
+        <div class="row g-4 g-lg-5" data-aos="fade-up" data-aos-delay="200">
+          
+          <div class="col-lg-15">
+          <!-- ======= Testimonials Section ======= -->
+          <section id="testimonials" class="testimonials">
+              <div class="container" data-aos="fade-up">
+        
+                <div class="testimonials-slider swiper">
+                  <div class="swiper-wrapper">
+                    {% for e in eatery %}
+                      <div class="swiper-slide">
+                        <div class="testimonial-item row">
+                          <div class="col-4">
+                            {% if e.image %}
+                            <img src="{{e.image.url}}" alt="" style="width:250px;height:250px;">
+                            {% elif e.crawling_image %}
+                            <img src="/{{e.crawling_image}}" alt="" style="width:250px;height:250px;">
+                            {% endif %}
+                          </div>
+                          <div id="comment" class="col-8">
+                            <h3 class="mb-3">{{e.eatery_name}}</h3>
+                            <p>{{e.user__userid}}</p>
+                            <p>
+                              <i class="bi bi-quote quote-icon-left"></i>
+                              {{e.comment}}
+                              <i class="bi bi-quote quote-icon-right"></i>
+                            </p>
+                            <div class="mt-4">
+                              <a href="{% url 'Eatery:eatery_detail' e.id %}" type="button" class="btn btn-outline-light">자세히 보기</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>  
+                    {% endfor %}
+                  </div>
+                  <div class="swiper-pagination"></div>
+                </div>
+              </div>
+            </section>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+{% block script %}
+
+{% endblock script %}

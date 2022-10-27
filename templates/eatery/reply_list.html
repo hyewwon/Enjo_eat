@@ -1,0 +1,30 @@
+<h4 class="comments-count">{{count_reply}}개 후기</h4>
+{% if reply_list %}
+    {% for reply in reply_list %}
+    <div id="comment-4" class="comment">
+        <input type="hidden" id="reply_id" value="{{reply.id}}">
+        <div class="row d-flex">
+            <div class="col-10">
+                <h5>{{reply.user.userid}}</h5>
+                <time datetime="2020-01-01">{{reply.created_at}}</time>
+                <p>
+                    {{reply.reply}}
+                </p>
+            </div>
+            {% if logged_id == reply.user.userid %}
+                <div class="col-2"> 
+                    <button onclick="deleteReply({{reply.id}});" class="btn btn-dark btn-sm" style="float:right;">삭제</button>
+                </div>
+            {% endif %}
+        </div>
+    </div><!-- End comment #4 -->
+    {% endfor %}
+{% else %}
+    <div id="comment-4" class="comment">
+        <div class="d-flex">
+            <p>
+                후기가 없습니다..
+            </p>
+        </div>
+    </div><!-- End comment #4 -->
+{% endif %}

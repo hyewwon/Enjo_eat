@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% endblock content %}
+{% block script %}
+<script>
+    alert("로그인 후 이용해주세요")
+    location.href = "{% url next %}"
+</script>
+{% endblock script %}

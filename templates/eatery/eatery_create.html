@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheets %}
+<link href="{% static 'eatery/css/eatery_create.css' %}" rel="stylesheet">
+{% endblock stylesheets %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>메뉴 추가</h2>
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Add Eatery</li>
+            </ol>
+        </div>
+        
+    </div>
+</div><!-- End Breadcrumbs -->
+
+<section class="inner-page">
+    <div class="container" data-aos="fade-up">
+        <section id="contact" class="contact">
+            <div class="container">
+                <a href="{% url 'Eatery:eatery_manage' group_pk %}" type="button" class="btn btn-outline-dark">돌아가기</a>
+                <div class="section-header">
+                  <p>다양한 음식점을 추가해 주세요</p>
+                </div>
+            </div>
+        
+            <div class="container">
+                <div class="row gy-5 gx-lg-5">
+                    <div class="col-lg-3">
+                        <div class="info">
+                            <div id="show_image" class="mb-5 text-center" data-aos="zoom-out" data-aos-delay="200">
+                                <div class="info-item d-flex" id="image_error" style="width:100%;height:200px;"></div>
+                            </div>
+                            <div class="info-item d-flex">
+                                <div>
+                                    <h4>등록자 : </h4>
+                                    <p>{{request.session.userid}}</p>
+                                </div>
+                            </div><!-- End Info Item -->
+
+                            <div class="info-item d-flex">
+                                <div>
+                                    <h4>음식점 이름 : </h4>
+                                    <div id="copy_eatery_name"></div>
+                                </div>
+                            </div><!-- End Info Item -->
+
+                            <div class="info-item d-flex">
+                                <div>
+                                    <h4>종류 : </h4>
+                                    <div id="copy_eatery_type"></div>
+                                </div>
+                            </div><!-- End Info Item -->
+                            <div class="info-item d-flex">
+                                <div>
+                                    <h4>위치 :</h4>
+                                <div id="copy_show_location"></div>
+                            </div>
+                        </div><!-- End Info Item -->
+                    </div>
+                    <div class="text-center mt-5"><button type="button" id="btn_submit" class="btn btn-warning btn-lg">등록하기</button></div>
+                </div>
+                <input type="hidden" value="{{group_location}}" id="group_location" name="group_location">
+                <div class="col-lg-8">
+                    <form action="{% url 'Eatery:eatery_create' group_pk %}" method="post" role="form" id="regist_form" enctype="multipart/form-data" class="php-email-form">
+                        {% csrf_token %}
+                        <div class="row" id="input">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="eatery_name" class="form-control" id="eatery_name" style="height:50px;" placeholder="음식점 이름을 작성해 주세요" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <select name="eatery_type" id="eatery_type" class="form-select" style="height:50px;border-radius:0px;">
+                                    <option class="form-text" value="" disabled selected>종류를 골라주세요</option>
+                                    <option class="form-text" value="한식">한식</option>
+                                    <option class="form-text" value="양식">양식</option>
+                                    <option class="form-text" value="중식">중식</option>
+                                    <option class="form-text" value="일식">일식</option>
+                                    <option class="form-text" value="기타">기타</option>
+                                </select>
+                            </div>
+                            <div class="form-group mt-3">
+                                <input type="file" class="form-control" name="user_image" id="user_image" data-rule="minlen:1" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <p style="font-size:small;">* 이미지가 없다면?</p>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <input type="text" class="form-control" name="crawl_image_title" id="crawl_image_title" data-rule="minlen:1" style="height:50px;" data-url="{% url 'Eatery:image_crawling' %}" placeholder="무슨식당인가요? ex) 부대찌개 식당">
+                                        <input type="hidden" class="form-control" name="crawl_image" id="crawl_image">
+                                    </div>
+                                    <div class="col-2" style="margin:auto;">
+                                        <input type="button" class="btn btn-outline-warning" id="btn_image" style="height:50px;" value="이미지 넣기">
+                                    </div>
+                                    <div id="crawl_image_error"></div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <input type="text" class="form-control" name="comment" id="comment" data-rule="minlen:1" placeholder="식당의 한줄 평을 작성해 주세요">
+                                    <div id="comment_error"></div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-2">
+                                <input type="text" class="form-control" name="show_location" id="show_location" placeholder="지도를 통해서 위치를 등록해 주세요" readonly>
+                                <input type="hidden" id="eatery_real_location" name="eatery_real_location" value="">
+                            </div>
+                            <p style="font-size:small;">* 테마 설정 지역: {{group_location}}</p>
+                        </div>
+                    </form>
+                    <div class="map_wrap">
+                        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+                        <div id="menu_wrap" class="bg_white">
+                            <div class="option">
+                                <div>
+                                    키워드 : <input type="text" value="{{group_location}}" id="keyword" size="15"> 
+                                    <button type="button" class="btn btn-warning" onclick="searchPlaces();" id="btn_map">검색하기</button> 
+                                </div>
+                            </div>
+                            <hr>
+                            <ul id="placesList"></ul>
+                            <div id="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End Contact Section -->
+    </div>
+</section><!-- End Inner Page -->
+{% endblock content %}
+{% block script %}
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ece84f7a9edca4a7b0fa6dc9b18040bc&libraries=services"></script>
+<script src="{% static 'eatery/js/eatery_create.js' %}"></script>
+{% endblock script %}

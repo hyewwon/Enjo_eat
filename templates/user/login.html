@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Login</h2>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li>login</li>
+        </ol>
+      </div>
+
+    </div>
+</div><!-- End Breadcrumbs -->
+
+  <!-- ======= Blog Section ======= -->
+<section class="inner-page">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+            <h3>로그인</h3>
+        </div>
+     
+    </div>
+    <div class="container">
+        <form action="{% url 'User:login' %}" method="post" role="form" id="login_form" enctype="multipart/form-data" class="php-email-form">
+            {% csrf_token %}
+            <div class="mb-5">
+                <div class="form-group mb-3">
+                    <div class="form-text">아이디 : </div>
+                    <div class="mt-2 mb-2">
+                        <input type="text" class="form-control" name="userid" id="userid" placeholder="아이디를 입력해주세요">
+                    </div>
+                    <div id="userid_error"></div>
+                </div>
+                <div class="form-group">
+                    <div class="form-text">비밀번호 : </div>
+                    <div class="mt-2 mb-2">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호를 입력해주세요">
+                    </div>
+                    <div id="password_error"></div>
+                </div>
+                <div style="text-align:center;" class="mt-5">
+                    <div id="login_error"></div>
+                    <input type="button" id="btn_login" class="btn btn-warning" style="color:white;width:150px;height:50px" value="로그인">
+                </div>
+                <p class="form-text">아이디가 없다면?&nbsp;&nbsp;&nbsp;<a href="{% url 'User:join' %}">회원가입 하러가기</a></p>
+            </div>
+        </form>
+    </div>
+</section><!-- End Inner Page -->
+
+{% endblock content %}
+{% block script %}
+<script src="{% static 'user/js/login.js' %}"></script>
+{% endblock script %}

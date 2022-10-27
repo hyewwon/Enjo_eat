@@ -1,0 +1,71 @@
+.card{
+    width:150px;
+    height:200px;
+    perspective:300px;
+    margin:0 auto;
+    padding: 0;
+    border: none;
+    
+
+}
+.card .common{
+    width: 150px;
+    height: 200px;
+    border: 1px solid rgb(232,122,68);
+    border-radius: 0.25rem;
+    backface-visibility: hidden;
+    transition: 1s;
+}
+
+.card .common.front {
+    position: absolute;
+    transform: rotateY(0deg);
+    text-align: center;
+    background-color: rgb(232,122,68);
+    line-height: 190px;
+}
+
+.card.flip .front{
+    transform: rotateY(180deg);
+}
+
+.card .common.back {
+    text-align: center;
+    transform: rotateY(-180deg);
+    background-color: white;
+    border:2px solid rgb(232,122,68);
+
+}
+
+.card.flip .back{
+    transform: rotateY(0deg);
+}
+
+.front_image{
+    width: 100px;
+    height: 100px;
+}
+
+#back_image{
+    width:100px;
+    height: 100px;
+}
+
+
+/* modal */
+.modal-body{
+    text-align: center;
+}
+
+#modal-ok-btn{
+    background-color: rgb(232,122,68);
+    color: white;
+    border-color: rgb(232,122,68);
+}
+
+#modal-detail-btn{
+    background-color: rgb(232,122,68);
+    color: white;
+    border-color: rgb(232,122,68);
+}
+
