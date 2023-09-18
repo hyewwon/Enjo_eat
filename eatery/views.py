@@ -11,6 +11,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import urllib.request
 import time
+import os
+import requests
 
 
 class HomeView(View):
@@ -175,15 +177,12 @@ class EateryCreateView(View):
 class EateryDetailView(View):
     def get(self,request:HttpRequest,*args, **kwargs):
         if not request.session.get('userid'):
-
             return render(request,"user/no_login.html",{'next':'home'})
 
         context = {}
         pk = kwargs.get("pk")
-        
         eatery = get_object_or_404(Eatery,pk=pk)
         try:
-
             reply_list = Reply.objects.filter(eatery=eatery).order_by("-created_at")
             count_reply = len(reply_list)
         except:
@@ -324,7 +323,7 @@ def crawlingImage(request):
     driver = webdriver.Chrome(driver_path,options=options)
     
     driver.get("https://www.google.co.kr/imghp?hl=ko&tab=wi&authuser=0&ogbl") 
-    elem = driver.find_element(By.CSS_SELECTOR,".gLFyf.gsfi")
+    elem = driver.find_element(By.CSS_SELECTOR,".gLFyf")
     elem.send_keys(image_title)
     elem.send_keys(Keys.RETURN)
 
@@ -334,15 +333,23 @@ def crawlingImage(request):
     time.sleep(4)
 
     try:
-        imgUrl = driver.find_element(By.XPATH,'//*[@id="Sva75c"]/div/div/div[3]/div[2]/c-wiz/div/div[1]/div[1]/div[3]/div/a/img')\
+        imgUrl = driver.find_element(By.XPATH,'//*[@id="Sva75c"]/div[2]/div[2]/div[2]/div[2]/c-wiz/div/div/div/div[3]/div[1]/a/img[1]')\
             .get_attribute('src')
-    except:
+    except Exception as e:
+        print(e)
         context["success"] = False
         context["message"] = "크롤링 실패, 다시 시도해 주세요..."
 
         return JsonResponse(context)
-    
-    urllib.request.urlretrieve(imgUrl, image_url)
+
+    url = imgUrl + image_url
+
+    r = requests.get(url)
+
+    with open("이미지", "wb") as outfile:
+        outfile.write(r.content)
+
+    # urllib.request.urlretrieve(imgUrl, image_url)
 
     driver.close()
 
@@ -356,8 +363,6 @@ def crawlingImage(request):
         temp_list.remove("enjo_eat")
         
     image_url = "/".join(temp_list)
-
-    print(f"========={image_url}========")
 
     context["success"] = True
     context["image_url"] = image_url
