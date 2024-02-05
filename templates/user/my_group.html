@@ -13,10 +13,10 @@
 <div class="breadcrumbs">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center">
-      <h2>메뉴</h2>
+      <h2>MyPage</h2>
       <ol>
         <li><a href="/">Home</a></li>
-        <li>Choice</li>
+        <li>MyPage</li>
       </ol>
     </div>
 
@@ -27,25 +27,28 @@
         <!-- ======= Recent Blog Posts Section ======= -->
         <section id="recent-blog-posts" class="recent-blog-posts">
             <div class="container" data-aos="fade-up">
-                <a href="{% url 'Eatery:group_create' %}" type="button" class="btn btn-warning" style="">테마 추가하기</a>
                 <div class="section-header">
-                    <h2>theme</h2>
-                    <p>어느 테마로 가시겠어요?</p>
+                    <h2>My theme</h2>
+                    <p>내가 등록한 테마 입니다</p>
                 </div>
                 <div class="row">
-                    {% for group in groups %}
-                    <div class="col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="200" id="group_box" style="margin:12px;">
-                        {% if request.session.userid == group.user.userid %}
+                    {% if groups %}
+                        {% for group in groups %}
+                        <div class="col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="200" id="group_box" style="margin:12px;">
                             <a href="{% url 'Eatery:group_edit' group.id %}" type="button" class="btn btn-outline-danger btn-sm mt-2" style="float: right;">수정</a>
-                        {% endif %}
-                        <div class="post-box">
-                            <h4 class="post-title">{{group.group_name}}</h4>
-                            <p class="form-text">주요 지역 : {{group.group_location}}</p>
-                            <p class="form-text">{{group.group_comment}}</p>
-                            <a href="{% url 'Eatery:eatery_manage' group.id %}" class="readmore stretched-link"><span>등록된 메뉴 보러가기</span><i class="bi bi-arrow-right"></i></a>
+                            <div class="post-box">
+                                <h4 class="post-title">{{group.group_name}}</h4>
+                                <p class="form-text">주요 지역 : {{group.group_location}}</p>
+                                <p class="form-text">{{group.group_comment}}</p>
+                                <a href="{% url 'User:my_eatery' group.id %}" class="readmore stretched-link"><span>등록된 메뉴 보러가기</span><i class="bi bi-arrow-right"></i></a>
+                            </div>
                         </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="col-12 text-center" style="margin-top:50px;">
+                        <h6>등록한 게시물이 없습니다</h6>
                     </div>
-                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </section><!-- End Recent Blog Posts Section -->

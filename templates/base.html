@@ -48,7 +48,8 @@
       {% if request.session.userid %}
       <div style="float: right;margin-right:50px;" class="">
         {{request.session.userid}} 님 환영합니다 😀&nbsp;&nbsp;&nbsp;
-        <a href="{% url 'User:logout' %}">로그아웃</a>
+        <a href="{% url "User:mypage" %}" class="p-2">마이페이지</a>
+        <a href="{% url 'User:logout' %}" class="p-2">로그아웃</a>
       </div>
       {% else %}
       <div style="float: right;margin-right:50px;" class="">

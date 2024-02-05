@@ -42,7 +42,7 @@
                 <img src="{% static 'assets/img/home.png' %}" class="img-fluid" alt="">
                 {% endif %}
               </div>
-              <h3 class="post-title">{{e.eatery_name}}</h3>
+              <h3 class="post-title"><small>{{e.eatery_name}}</small></h3>
               <div class="meta">
                 <span class="post-author">{{e.eatery_type}}</span>
               </div>
@@ -56,7 +56,7 @@
           등록된 음식점이 없어요..
         </p>
         <p class="form-text">
-          {% comment %} (등록된 음식점이 없는 테마는 음식점 고르기에서 제외됩니다) {% endcomment %}
+          (등록된 음식점이 없는 테마는 음식점 고르기에서 제외됩니다)
         </p>
         <a href="{% url 'Eatery:eatery_create' group_pk  %}" class="btn btn-warning btn-lg mt-3">등록하기</a>
       </div>

@@ -27,7 +27,6 @@ class HomeView(View):
 class GroupManageView(View):
     def get(self,request:HttpRequest,*args, **kwargs):
         if not request.session.get('userid'):
-
             return render(request,"user/no_login.html",{'next':'User:login'})
 
         context = {}
@@ -40,13 +39,11 @@ class GroupCreateView(View):
 
     def get(self,request:HttpRequest,*args, **kwargs):
         if not request.session.get("userid"):
-
             return render(request,"user/no_login.html",{"next":"User:login"})
         
         return render(request,"eatery/group_create.html")
 
     def post(self,request:HttpRequest,*args, **kwargs):
-
         group_name = request.POST.get("name")
         group_comment = request.POST.get("comment")
         group_location = request.POST.get("location")
@@ -65,10 +62,8 @@ class GroupCreateView(View):
         return redirect(f"/eatery/eatery_create/{group.id}/")
 
 class GroupEditView(View):
-
     def get(self,request:HttpRequest,*args, **kwargs):
         if not request.session.get("userid"):
-
             return render(request,"user/no_user.html",{"next":"User:login"})
 
         context = {}
@@ -79,7 +74,6 @@ class GroupEditView(View):
         return render(request,"eatery/group_edit.html",context)
 
     def post(self,request:HttpRequest,*args, **kwargs):
-
         pk = kwargs.get("pk")
         group_name = request.POST.get("name")
         group_location = request.POST.get("location")
@@ -113,9 +107,7 @@ class GroupEditView(View):
 
 class EateryManageView(View):
     def get(self,request:HttpRequest,*args, **kwargs):
-
         if not request.session.get('userid'):
-
             return render(request,"user/no_login.html",{'next':'User:login'})
 
         context = {}
@@ -128,10 +120,8 @@ class EateryManageView(View):
 
 
 class EateryCreateView(View):
-
     def get(self, request:HttpRequest,*args, **kwargs):
         if not request.session.get('userid'):
-
             return render(request,"user/no_login.html",{'next':'User:login'})
 
         context = {}
@@ -144,7 +134,6 @@ class EateryCreateView(View):
 
 
     def post(self,request:HttpRequest,*args, **kwargs):
-
         group_pk = kwargs.get("pk")
         eatery_name = request.POST.get("eatery_name")
         eatery_type = request.POST.get("eatery_type")

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    #group_box{
+        width:300px;
+        height:150px;
+        border:1px solid orange;
+        box-shadow: 5px 5px 5px lightgray;
+    }
+</style>
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>MyPage</h2>
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>MyPage</li>
+      </ol>
+    </div>
+
+  </div>
+</div><!-- End Breadcrumbs -->
+<section class="sample-page">
+    <div class="container" data-aos="fade-up">
+        <!-- ======= Recent Blog Posts Section ======= -->
+        <section id="recent-blog-posts" class="recent-blog-posts">
+            <div class="container" data-aos="fade-up">
+                <div class="section-header">
+                    <h2>My Eatery</h2>
+                    <p>내가 등록한 음식점 입니다</p>
+                </div>
+                <div class="row">
+                    {% if eateries %}
+                        {% for eatery in eateries %}
+                        <div class="col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="200" id="group_box" style="margin:12px;">
+                            <div class="post-box">
+                                <p class="post-title"><small>{{eatery.eatery_name}}</small></p>
+                                <p class="form-text">{{eatery.eatery_type}}</p>
+                                <a href="" class="readmore stretched-link"><span>상세보기</span><i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="col-12 text-center" style="margin-top:50px;">
+                        <h6>등록한 게시물이 없습니다</h6>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section><!-- End Recent Blog Posts Section -->
+    </div>
+</section>
+{% endblock content %}
+{% block script %}
+{% endblock script %}
