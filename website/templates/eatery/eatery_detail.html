@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h2></h2>
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Eatery Detail</li>
+            </ol>
+        </div>
+        
+    </div>
+</div><!-- End Breadcrumbs -->
+
+<!-- ======= Blog Details Section ======= -->
+<section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+        <div class="container mb-5">
+            <a href="{% url 'website:eatery_manage' group_pk %}" type="button" class="btn btn-outline-dark" style="">돌아가기</a>
+            {% if request.session.userid == eatery.user.userid %}
+                <input type="hidden" value="{{eatery.id}}" id="eatery_id" name="eatery_id">
+                <a href="" id="btn_eatery_delete" type="button" class="btn btn-outline-danger" style="float: right; margin-left:10px;">삭제하기</a>
+                <a href="{% url 'website:eatery_edit' eatery.id %}" type="button" class="btn btn-outline-warning" style="float: right;">수정하기</a>
+            {% endif %}
+        </div>
+
+        <article class="blog-details row mb-3" style="margin-right:0;margin-left:0;"> 
+            <div class="col-8">
+
+                <h2 class="title">{{eatery.eatery_name}}</h2>
+    
+                <div class="meta-top">
+                    <ul>
+                        <li class="d-flex align-items-center"><i class="bi bi-person"></i>{{eatery.user.userid}}</li>
+                    </ul>
+                </div><!-- End meta top -->
+    
+                <div class="content">
+                    <p>
+                        종류 : {{eatery.eatery_type}}
+                    </p>
+                    <p>
+                        위치 : {{eatery.eatery_location}}
+                    </p>
+                    좋아요
+                </div><!-- End post content -->
+            </div>
+            <div class="col-4" style="margin:auto;text-align:center;">
+                {% if eatery.image  %}
+                <img src="{{eatery.image.url}}" class="img-fluid" style="width:250px;" alt="">
+                {% elif eatery.crawling_image %}
+                <img src="/{{eatery.crawling_image}}" class="img-fluid" alt="" style="width:250px;">
+                {% else %}
+                <img src="{% static 'assets/img/home.png' %}" class="img-fluid" alt="" style="width:250px;">
+                {% endif %}
+            </div>
+        </article><!-- End blog post -->
+            
+        <article class="blog-details">
+            <h4>식당위치</h4>
+            <div class="content">
+                <input type="hidden" value="{{eatery.eatery_location}}" id="eatery_location">
+                <input type="hidden" value="{{eatery.eatery_name}}" id="eatery_name">
+                <div id="map" style="width:100%;height:350px;"></div>
+            </div><!-- End post content -->
+        </article><!-- End blog post -->
+
+        <div class="post-author d-flex align-items-center">
+            <img src="assets/img/blog/blog-author.jpg" class="rounded-circle flex-shrink-0" alt="">
+            <div>
+                <h4 class="mb-2">등록자 후기&nbsp<i class="bi bi-chat-dots"></i></h4>
+                <p>
+                    {% if eatery.comment == "" %}
+                    한 줄평이 없습니다
+                    {% else %}
+                    {{eatery.comment}}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="comments">
+            <div class="reply-form mb-5">
+                <h4>음식점에 대한 후기를 남겨주세요</h4>
+                <p>욕설은 안돼요...</p>
+                <form action="" method="post" enctype="multipart/form-data" id="reply_form">
+                    <div class="row">
+                        <div class="col form-group">
+                            작성자 : {{request.session.userid}}
+                            <input type="hidden" name="userid" id="userid" data-url="{% url 'website:eatery_reply' eatery.id %}" value="{{request.session.userid}}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col form-group">
+                            <textarea name="reply" id="reply" class="form-control" placeholder="후기를 남겨주세요"></textarea>
+                            <div id="reply_error"></div>
+                        </div>
+                    </div>
+                </form>
+                <button id="btn_reply" class="btn btn-warning">작성하기</button>
+            </div>
+
+            <div id="reply_list">
+                {{reply_list}}
+            </div>
+        </div>
+    </div>  
+</section>
+{% endblock content %}
+{% block script %}
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ece84f7a9edca4a7b0fa6dc9b18040bc&libraries=services"></script>
+<script src="{% static 'eatery/js/eatery_detail.js' %}"></script>
+{% endblock script %}

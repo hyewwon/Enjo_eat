@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'eatery_selection/css/eatery_select.css' %}">
+{% endblock stylesheets %}
+{% block content %}
+<section class="sample-page">
+    <div class="container" data-aos="fade-up">
+        <section id="recent-blog-posts" class="recent-blog-posts">
+            <a type="button" class="btn btn-outline-dark" href="{% url 'website:group_select' %}">테마 다시 고르기</a>
+            <div class="container" data-aos="fade-up">
+                <div class="section-header">
+                    <h2>Select</h2>
+                    {% if random_eatery %}
+                    <p class="form-text mt-2">* 무작위로 섞인 음식점들 중 하나를 선택하세요</p>
+                    {% endif %}
+                </div>
+                {% if random_eatery %}
+                <div id="card_section" class="row">
+                    {% for eatery in random_eatery %}
+                    <div class="card mb-5" data-url="{% url 'website:eatery_detail' eatery.id %}" data-eatery-name="{{eatery.eatery_name}}" data-eatery-image="{% if eatery.image %}{{eatery.image.url}}{% else %}/{{eatery.crawling_image}}{% endif %}">
+                        <div id="card_front" class="common front" onclick="selectCard(this);">
+                            <img src="{% static 'assets/img/home.png' %}" alt="" class="front_image">
+                        </div>
+                        <div id="card_back" class="common back">
+                            <p class="form-text" style="color:rgb(232,122,68);">
+                                {{eatery.eatery_name}}
+                            </p>
+                            <p>
+                                {% if eatery.image %}
+                                <img id="back_image" src="{{eatery.image.url}}" alt="">
+                                {% elif eatery.crawling_image %}
+                                <img id="back_image" src="/{{eatery.crawling_image}}" alt="">
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center mt-5 form-control" style="text-align:center;height:300px;padding:50px;">
+                    <p class="form-text" style="font-size:large;">등록된 음식점이 없습니다....  다시 선택해 주세요</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="result_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">선택 결과 😁</h5>
+    </div>
+    <div class="modal-body">
+        <div id="result-eatery"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="" type="button" id="modal-detail-btn" class="btn">자세히 보러가기</a>
+        <a href="/" type="button" id="modal-ok-btn" class="btn">메인으로</a>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" onclick="window.location.reload();">다시 고르기</button>
+    </div>
+    </div>
+</div>
+</div>
+{% endblock content %}
+{% block script %}
+<script src="{% static 'eatery_selection/js/eatery_select.js' %}"></script>
+{% endblock script %}

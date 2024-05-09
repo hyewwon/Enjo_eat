@@ -17,7 +17,7 @@
       <h2>Welcome to <span>Enjo_eat</span></h2>
       <p>메뉴를 선택하기 쉬워져요</p>
       <div class="d-flex">
-        <a href="{% url 'Eatery_selection:group_select' %}" class="btn-get-started scrollto" style="margin-right:10px;">음식점 고르기</a>
+        <a href="{% url 'website:group_select' %}" class="btn-get-started scrollto" style="margin-right:10px;">음식점 고르기</a>
         </div>
       </div>
     </section>
@@ -32,7 +32,7 @@
           <p class="mb-2">&</p>
           <p class="mb-2">다녀온 음식점을 평가해 보세요</p>
           <p>↓</p>
-          <a href="{% url 'Eatery:group_manage' %}" class="btn btn-outline-dark mt-4">등록된 음식점 보러가기</a>
+          <a href="{% url 'website:group_manage' %}" class="btn btn-outline-dark mt-4">등록된 음식점 보러가기</a>
         </div>
         
         <div class="row g-4 g-lg-5" data-aos="fade-up" data-aos-delay="200">
@@ -63,7 +63,7 @@
                               <i class="bi bi-quote quote-icon-right"></i>
                             </p>
                             <div class="mt-4">
-                              <a href="{% url 'Eatery:eatery_detail' e.id %}" type="button" class="btn btn-outline-light">자세히 보기</a>
+                              <a href="{% url 'website:eatery_detail' e.id %}" type="button" class="btn btn-outline-light">자세히 보기</a>
                             </div>
                           </div>
                         </div>
