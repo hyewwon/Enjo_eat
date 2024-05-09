@@ -2,37 +2,24 @@ from django.views import View
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.db import transaction
-from website.models import Eatery,User,Group
+from website.models import Group
 import json
 
-
-class HomeView(View):
+class GroupManageView(LoginRequiredMixin, View):
+    login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
-        context = {}
-        eatery = Eatery.objects.all().values("id","user__userid","comment","eatery_name","image","crawling_image")
-        context["eatery"] = eatery
-
-        return render(request,"home.html",context)
-
-
-class GroupManageView(View):
-    def get(self,request:HttpRequest,*args, **kwargs):
-        if not request.session.get('userid'):
-            return render(request,"user/no_login.html",{'next':'website:login'})
-
         context = {}
         groups = Group.objects.all()
         context["groups"] = groups
         return render(request,"eatery/group_manage.html",context)
 
     
-class GroupCreateView(View):
-
+class GroupCreateView(LoginRequiredMixin, View):
+    login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
-        if not request.session.get("userid"):
-            return render(request,"user/no_login.html",{"next":"website:login"})
-        
         return render(request,"eatery/group_create.html")
 
     def post(self,request:HttpRequest,*args, **kwargs):
@@ -40,7 +27,7 @@ class GroupCreateView(View):
         group_comment = request.POST.get("comment")
         group_location = request.POST.get("location")
 
-        user = get_object_or_404(User,userid=request.session["userid"])
+        user = get_object_or_404(User,username=request.user)
         with transaction.atomic():
             group = Group(
                 group_name = group_name,
@@ -52,16 +39,13 @@ class GroupCreateView(View):
 
         return redirect(f"/eatery/eatery_create/{group.id}/")
 
-class GroupEditView(View):
+class GroupEditView(LoginRequiredMixin, View):
+    login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
-        if not request.session.get("userid"):
-            return render(request,"user/no_user.html",{"next":"website:login"})
-
         context = {}
         pk = kwargs.get("pk")
         group = get_object_or_404(Group,pk=pk)
         context["group"] = group
-
         return render(request,"eatery/group_edit.html",context)
 
     def post(self,request:HttpRequest,*args, **kwargs):
@@ -79,7 +63,6 @@ class GroupEditView(View):
         group.save()
 
         return redirect("/eatery/group_manage/")
-
 
     def delete(self,request:HttpRequest,*args, **kwargs):
         context = {}

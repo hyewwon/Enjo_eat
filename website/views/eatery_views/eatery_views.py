@@ -2,8 +2,10 @@ from django.views import View
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.db import transaction
-from website.models import Eatery,Reply,User,Group
+from website.models import Eatery,Reply,Group
 import json, time, requests
 
 from selenium import webdriver
@@ -11,11 +13,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
 
-class EateryManageView(View):
+class EateryManageView(LoginRequiredMixin, View):
+    login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
-        if not request.session.get('userid'):
-            return render(request,"auth/no_login.html",{'next':'website:login'})
-
         context = {}
         group_pk = kwargs.get("pk")
         eatery = Eatery.objects.filter(group=group_pk)
@@ -25,11 +25,9 @@ class EateryManageView(View):
         return render(request,"eatery/eatery_manage.html",context)
 
 
-class EateryCreateView(View):
+class EateryCreateView(LoginRequiredMixin, View):
+    login_url="website:login"
     def get(self, request:HttpRequest,*args, **kwargs):
-        if not request.session.get('userid'):
-            return render(request,"auth/no_login.html",{'next':'website:login'})
-
         context = {}
         group_pk = kwargs.get("pk")
         group = Group.objects.get(pk=group_pk)
@@ -37,7 +35,6 @@ class EateryCreateView(View):
         context["group_location"] = group.group_location
 
         return render(request,"eatery/eatery_create.html",context)
-
 
     def post(self,request:HttpRequest,*args, **kwargs):
         group_pk = kwargs.get("pk")
@@ -50,7 +47,7 @@ class EateryCreateView(View):
         comment = request.POST.get("comment")
 
         group = get_object_or_404(Group,pk=group_pk)
-        user = get_object_or_404(User,userid=request.session["userid"])
+        user = get_object_or_404(User,username=request.user)
 
         with transaction.atomic():
             eatery = Eatery(
@@ -69,11 +66,9 @@ class EateryCreateView(View):
 
         return redirect(f"/eatery/eatery_manage/{group.pk}")
 
-class EateryDetailView(View):
+class EateryDetailView(LoginRequiredMixin, View):
+    login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
-        if not request.session.get('userid'):
-            return render(request,"auth/no_login.html",{'next':'home'})
-        
         context = {}
         pk = kwargs.get("pk")
         eatery = get_object_or_404(Eatery,pk=pk)
@@ -107,20 +102,17 @@ class EateryDetailView(View):
         return JsonResponse(context)
 
 
-
-class EateryEditView(View):
+class EateryEditView(LoginRequiredMixin, View):
+    login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
         pk = kwargs.get("pk")
-
         eatery = get_object_or_404(Eatery,pk=pk)
         context["eatery"] = eatery
-
         return render(request,"eatery/eatery_edit.html",context)
 
     def post(self,request:HttpRequest,*args, **kwargs):
         context = {}
-
         pk = kwargs.get("pk")
         eatery_name = request.POST.get("eatery_name")
         eatery_type = request.POST.get("eatery_type")
@@ -139,7 +131,6 @@ class EateryEditView(View):
 
 
 class EateryReplyView(View):
-
     def post(self,request:HttpRequest,*args, **kwargs):
         context = {}
         pk = kwargs.get("pk")
@@ -148,7 +139,7 @@ class EateryReplyView(View):
         reply = request.POST.get("reply")
         logged_id = request.session.get("userid")
         eatery = get_object_or_404(Eatery,pk=pk)
-        user = get_object_or_404(User,userid=userid)
+        user = get_object_or_404(User,username=userid)
         try:
             reply = Reply(
                 eatery = eatery,
@@ -174,7 +165,6 @@ class EateryReplyView(View):
 
         return JsonResponse(context)
 
-    
 
     def delete(self,request:HttpRequest,*args, **kwargs):
         context = {}
@@ -186,9 +176,7 @@ class EateryReplyView(View):
         eatery = Eatery.objects.get(pk=pk)
         logged_id = request.session.get("userid")
         try:
-
             reply.delete()
-
             reply_list = Reply.objects.filter(eatery = eatery).order_by("-created_at")
             count_reply = len(reply_list)
         except:

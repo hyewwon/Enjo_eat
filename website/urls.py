@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth.views import LogoutView
 from website.views.auth_views.auth_views import LoginView, JoinView,CheckDupleView,LogoutView, MyPageView, MyGroupView, MyEateryView, HomeView
 from website.views.group_views.group_views import GroupManageView, GroupCreateView, GroupEditView
 from website.views.eatery_views.eatery_views import EateryManageView, EateryCreateView, EateryEditView, EateryDetailView, EateryReplyView, crawlingImage
@@ -14,7 +15,7 @@ urlpatterns = [
     path("login/",LoginView.as_view(),name="login"),
     path("join/",JoinView.as_view(), name="join"),
     path("duple/",CheckDupleView.as_view(), name="checkDuple"),
-    path("logout/",LogoutView.as_view(), name="logout"),
+    path('logout/', LogoutView.as_view(next_page='website:home'), name='logout'),
     path("my-group/", MyGroupView.as_view(), name="my_group"),
     path("mypage/", MyPageView.as_view(), name="mypage"),
     path("my-eatery/<int:group_id>/", MyEateryView.as_view(), name="my_eatery"),

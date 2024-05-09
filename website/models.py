@@ -1,19 +1,12 @@
-from pyexpat import model
+from django.contrib.auth.models import User
 from django.db import models
-
-class User(models.Model):
-    userid = models.CharField(max_length=50,unique=True,db_column="userid")
-    password = models.CharField(max_length=120,db_column="password")
-
-    class Meda:
-        db_table = "enjo_user"
 
 
 class Group(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     group_name = models.CharField(db_column="group",max_length=50,null=False)
     group_comment = models.TextField(db_column="group_comment",default="",null=True)
     group_location = models.CharField(db_column="location",max_length=50,default="")
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
 
     class Meta:
         db_table = "enjo_group"

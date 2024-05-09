@@ -16,17 +16,13 @@ class GroupSelectView(View):
 
 class EateryAllSelectView(View):
     def get(self,request:HttpRequest,*args, **kwargs):
-
         context = {}
-
         return render(request,"eatery_selection/group_all_select.html",context)
 
 
 class GetGroupLocationView(View):
-    
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
-
         try:
             eatery_location = Eatery.objects.all().values("eatery_location")
         except:
@@ -34,9 +30,7 @@ class GetGroupLocationView(View):
             context["message"] = "위치 가져오기 실패"
 
             return JsonResponse(context)
-
         temp = set()
-
         for location in eatery_location:
             temp.add(" ".join(location.get("eatery_location").split(" ")[:-1]))
 
@@ -47,15 +41,11 @@ class GetGroupLocationView(View):
 
 
 class EaterySelectView(View):
-
     def get(self,request:HttpRequest,*args, **kwargs):
-
         group_id = request.GET.get("group_id")
         eatery_type = request.GET.getlist("eatery_type")
         eatery_location = request.GET.get("eatery_location","")
-
         context = {}
-
         if group_id:
             eatery = Eatery.objects.filter(group=group_id).values("eatery_name","id","image","crawling_image")
             context["random_eatery"] = random.sample(list(eatery),len(eatery))
@@ -68,5 +58,4 @@ class EaterySelectView(View):
                 ).values("eatery_name","id","image","crawling_image")
 
             context["random_eatery"] = random.sample(list(eatery),len(eatery))
-            
         return render(request,"eatery_selection/eatery_select.html",context)
