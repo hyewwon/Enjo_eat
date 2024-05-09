@@ -6,9 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.db import transaction
-from django.contrib.auth.hashers import check_password, make_password
 from website.models import Group, Eatery
-from decimal import Decimal
 import json
 
 class HomeView(View):
