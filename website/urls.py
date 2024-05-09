@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-from website.views.auth_views.auth_views import LoginView, JoinView,CheckDupleView,LogoutView, MyPageView, MyGroupView, MyEateryView, HomeView
+from website.views.auth_views.auth_views import LoginView, JoinView,CheckDupleView, MyPageView, MyGroupView, MyEateryView, HomeView
 from website.views.group_views.group_views import GroupManageView, GroupCreateView, GroupEditView
 from website.views.eatery_views.eatery_views import EateryManageView, EateryCreateView, EateryEditView, EateryDetailView, EateryReplyView, crawlingImage
 from website.views.eatery_selection_views.eatery_selection_views import GroupSelectView, EateryAllSelectView, GetGroupLocationView, EaterySelectView
