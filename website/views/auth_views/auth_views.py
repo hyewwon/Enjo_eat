@@ -14,7 +14,7 @@ import json
 class HomeView(View):
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
-        eatery = Eatery.objects.all().values("id","user__userid","comment","eatery_name","image","crawling_image")
+        eatery = Eatery.objects.all().values("id","user__username","comment","eatery_name","image","crawling_image")
         context["eatery"] = eatery
 
         return render(request,"home.html",context)
@@ -63,16 +63,13 @@ class CheckDupleView(View):
         context = {}
         request.POST = json.loads(request.body)
         userid = request.POST.get("userid")
-
         context["exist"] = True
         context["success"] = True
-
         try:
             User.objects.get(username = userid)
         except:
             context["exist"] = False
-        
-
+            
         return JsonResponse(context)
 
 
