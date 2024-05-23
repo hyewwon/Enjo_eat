@@ -1,6 +1,7 @@
 /**
-* Template Name: HeroBiz - v2.4.0
+* Template Name: HeroBiz
 * Template URL: https://bootstrapmade.com/herobiz-bootstrap-business-template/
+* Updated: Mar 17 2024 with Bootstrap v5.3.3
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
@@ -54,31 +55,11 @@ h6 {
   position: absolute;
   border: 4px solid var(--color-primary);
   border-radius: 50%;
-  -webkit-animation: animate-preloader 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
   animation: animate-preloader 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 
 #preloader:after {
-  -webkit-animation-delay: -0.5s;
   animation-delay: -0.5s;
-}
-
-@-webkit-keyframes animate-preloader {
-  0% {
-    width: 10px;
-    height: 10px;
-    top: calc(50% - 5px);
-    left: calc(50% - 5px);
-    opacity: 1;
-  }
-
-  100% {
-    width: 72px;
-    height: 72px;
-    top: calc(50% - 36px);
-    left: calc(50% - 36px);
-    opacity: 0;
-  }
 }
 
 @keyframes animate-preloader {
@@ -683,16 +664,6 @@ section {
   }
 }
 
-@-webkit-keyframes up-down {
-  0% {
-    transform: translateY(10px);
-  }
-
-  100% {
-    transform: translateY(-10px);
-  }
-}
-
 @keyframes up-down {
   0% {
     transform: translateY(10px);
@@ -736,7 +707,6 @@ section {
   margin-bottom: 25px;
   font-size: 48px;
   font-weight: 300;
-  -webkit-animation: fadeInDown 1s both 0.2s;
   animation: fadeInDown 1s both 0.2s;
 }
 
@@ -748,7 +718,6 @@ section {
 
 .hero p {
   color: var(--color-secondary-light);
-  -webkit-animation: fadeInDown 1s both 0.4s;
   animation: fadeInDown 1s both 0.4s;
   font-weight: 500;
   margin-bottom: 30px;
@@ -756,7 +725,6 @@ section {
 
 .hero .img {
   margin-bottom: 40px;
-  -webkit-animation: fadeInDownLite 1s both;
   animation: fadeInDownLite 1s both;
 }
 
@@ -769,7 +737,6 @@ section {
   padding: 8px 32px;
   border-radius: 5px;
   transition: 0.5s;
-  -webkit-animation: fadeInUp 1s both 0.6s;
   animation: fadeInUp 1s both 0.6s;
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
@@ -839,6 +806,7 @@ section {
 }
 
 .hero .carousel-indicators li {
+  list-style-type: none;
   cursor: pointer;
   background: rgba(var(--color-secondary-rgb), 0.5);
   overflow: hidden;
@@ -855,16 +823,6 @@ section {
   background: var(--color-primary);
 }
 
-@-webkit-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -872,18 +830,6 @@ section {
 
   to {
     opacity: 1;
-  }
-}
-
-@-webkit-keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 100%, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -899,34 +845,10 @@ section {
   }
 }
 
-@-webkit-keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -100%, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
 @keyframes fadeInDown {
   from {
     opacity: 0;
     transform: translate3d(0, -100%, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@-webkit-keyframes fadeInDownLite {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -10%, 0);
   }
 
   to {
@@ -1477,15 +1399,10 @@ section {
   position: absolute;
   width: 120px;
   height: 120px;
-  -webkit-animation-delay: 0s;
   animation-delay: 0s;
-  -webkit-animation: pulsate-btn 2s;
   animation: pulsate-btn 2s;
-  -webkit-animation-direction: forwards;
   animation-direction: forwards;
-  -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
-  -webkit-animation-timing-function: steps;
   animation-timing-function: steps;
   opacity: 1;
   border-radius: 50%;
@@ -1523,7 +1440,6 @@ section {
   border-bottom: 10px solid transparent;
   border-left: 15px solid var(--color-white);
   z-index: 200;
-  -webkit-animation: none;
   animation: none;
   border-radius: 0;
 }
@@ -1531,18 +1447,6 @@ section {
 .onfocus .play-btn:hover:after {
   border-left: 15px solid var(--color-primary);
   transform: scale(20);
-}
-
-@-webkit-keyframes pulsate-btn {
-  0% {
-    transform: scale(0.6, 0.6);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(1, 1);
-    opacity: 0;
-  }
 }
 
 @keyframes pulsate-btn {
@@ -1614,7 +1518,6 @@ section {
 }
 
 .features .tab-pane.active {
-  -webkit-animation: fadeIn 0.5s ease-out;
   animation: fadeIn 0.5s ease-out;
 }
 
@@ -2415,7 +2318,6 @@ section {
   margin: 0 10px -6px 0;
   border: 3px solid var(--color-green);
   border-top-color: var(--color-white);
-  -webkit-animation: animate-loading 1s linear infinite;
   animation: animate-loading 1s linear infinite;
 }
 
@@ -2455,16 +2357,6 @@ section {
 
 .contact .php-email-form button[type=submit]:hover {
   background: rgba(var(--color-primary-rgb), 0.85);
-}
-
-@-webkit-keyframes animate-loading {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
 }
 
 @keyframes animate-loading {

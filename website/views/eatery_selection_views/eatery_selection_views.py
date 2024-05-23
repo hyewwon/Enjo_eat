@@ -7,6 +7,9 @@ from django.db.models import Q
 import random
 
 class GroupSelectView(View):
+    '''
+        그룹 선택
+    '''
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
         groups = Group.objects.all()
@@ -15,12 +18,18 @@ class GroupSelectView(View):
 
 
 class EateryAllSelectView(View):
+    '''
+        음식점 필터 
+    '''
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
         return render(request,"eatery_selection/group_all_select.html",context)
 
 
 class GetGroupLocationView(View):
+    '''
+        음식점 위치 조회
+    '''
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
         try:
@@ -41,6 +50,9 @@ class GetGroupLocationView(View):
 
 
 class EaterySelectView(View):
+    '''
+        음식점 선택
+    '''
     def get(self,request:HttpRequest,*args, **kwargs):
         group_id = request.GET.get("group_id")
         eatery_type = request.GET.getlist("eatery_type")

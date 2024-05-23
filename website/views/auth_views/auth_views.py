@@ -10,6 +10,9 @@ from website.models import Group, Eatery
 import json
 
 class HomeView(View):
+    '''
+        메인 페이지
+    '''
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
         eatery = Eatery.objects.all().values("id","user__username","comment","eatery_name","image","crawling_image")
@@ -19,6 +22,9 @@ class HomeView(View):
 
 
 class LoginView(View):
+    '''
+        로그인
+    '''
     def get(self,request:HttpRequest,*args, **kwargs):
         if request.user.is_authenticated:
             return redirect('website:home')
@@ -35,6 +41,9 @@ class LoginView(View):
     
 
 class JoinView(View):
+    '''
+        회원가입
+    '''
     def get(self,request:HttpRequest,*args, **kwargs):
         if request.user.is_authenticated:
             return redirect('website:home')
@@ -43,7 +52,6 @@ class JoinView(View):
     def post(self,request:HttpRequest,*args, **kwargs):
         userid = request.POST.get("userid")
         password = request.POST.get("password")
-
         try:
             with transaction.atomic():
                 User.objects.create_user(
@@ -57,6 +65,9 @@ class JoinView(View):
 
 
 class CheckDupleView(View):
+    '''
+        아이디 중복 검사
+    '''
     def post(self,request:HttpRequest,*args, **kwargs):
         context = {}
         request.POST = json.loads(request.body)
@@ -67,11 +78,14 @@ class CheckDupleView(View):
             User.objects.get(username = userid)
         except:
             context["exist"] = False
-            
+
         return JsonResponse(context)
 
 
 class MyPageView(LoginRequiredMixin, View):
+    '''
+        마이 페이지
+    '''
     login_url="website:login"
     def get(self, request:HttpRequest, *args, **kwargs):
         if request.user.is_authenticated:
