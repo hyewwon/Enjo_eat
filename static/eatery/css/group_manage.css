@@ -1,0 +1,57 @@
+.group-card {
+    /* width: 190px; */
+    height: 200px;
+    border-radius: 20px;
+    background: white;
+    position: relative;
+    padding: 3px;
+    border: 2px solid #c3c6ce;
+    transition: 0.5s ease-out;
+    overflow: visible;
+   }
+   
+.group-card-details {
+    color: black;
+    height: 100%;
+    gap: .5em;
+    display: grid;
+    place-content: center;
+}
+
+.group-card-button {
+    transform: translate(-50%, 125%);
+    text-align: center;
+    width: 70%;
+    border-radius: 1rem;
+    border: none;
+    background-color: orange;
+    color: #fff;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    opacity: 0;
+    transition: 0.3s ease-out;
+}
+
+.text-body {
+color: white;
+}
+
+/*Text*/
+.text-title {
+font-size: 1.5em;
+font-weight: bold;
+}
+
+/*Hover*/
+.group-card:hover {
+    border-color: orange;
+    box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+}
+
+.group-card:hover .group-card-button {
+transform: translate(-50%, 50%);
+opacity: 1;
+}

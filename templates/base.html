@@ -33,6 +33,7 @@
 
   <!-- Template Main CSS File -->
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+  {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
 {% csrf_token %}
@@ -71,6 +72,6 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" /> {% endcomment %}
 
 </body>
-{% block stylesheets %}{% endblock stylesheets %}
+
 {% block script %}{% endblock script %}
 </html>
