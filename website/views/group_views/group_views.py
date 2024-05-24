@@ -2,6 +2,7 @@ from django.views import View
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -9,6 +10,9 @@ from website.models import Group
 import json
 
 class GroupManageView(LoginRequiredMixin, View):
+    '''
+        그룹 목록
+    '''
     login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
@@ -18,28 +22,42 @@ class GroupManageView(LoginRequiredMixin, View):
 
     
 class GroupCreateView(LoginRequiredMixin, View):
+    '''
+        그룹 생성
+    '''
     login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
         return render(request,"eatery/group_create.html")
 
     def post(self,request:HttpRequest,*args, **kwargs):
-        group_name = request.POST.get("name")
-        group_comment = request.POST.get("comment")
-        group_location = request.POST.get("location")
+        context={}
+        request.POST = json.loads(request.body)
+        group_name = request.POST.get("group_name")
+        group_comment = request.POST.get("group_comment")
+        group_location = request.POST.get("group_location")
+        open_flag = request.POST.get("open_flag")
 
         user = get_object_or_404(User,username=request.user)
-        with transaction.atomic():
-            group = Group(
-                group_name = group_name,
-                group_comment = group_comment,
-                group_location = group_location,
-                user = user
-            )
-            group.save()
-
-        return redirect(f"/eatery/eatery_create/{group.id}/")
+        try:
+            with transaction.atomic():
+                group = Group(
+                    user = user,
+                    group_name = group_name,
+                    group_comment = group_comment,
+                    group_location = group_location,
+                    open_flag = open_flag
+                )
+                group.save()
+        except:
+            return JsonResponse({"message":"테마 생성 오류.. 관리자에게 문의해주세요!"}, status=400)
+        
+        context["url"] = reverse("website:eatery_create", kwargs={"pk":group.id})
+        return JsonResponse(context, status=202)
 
 class GroupEditView(LoginRequiredMixin, View):
+    '''
+        그룹 수정
+    '''
     login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}

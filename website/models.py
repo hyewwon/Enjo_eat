@@ -7,6 +7,7 @@ class Group(models.Model):
     group_name = models.CharField(db_column="group",max_length=50,null=False)
     group_comment = models.TextField(db_column="group_comment",default="",null=True)
     group_location = models.CharField(db_column="location",max_length=50,default="")
+    open_flag = models.BooleanField(db_column="open_flag", default=False)
 
     class Meta:
         db_table = "enjo_group"
