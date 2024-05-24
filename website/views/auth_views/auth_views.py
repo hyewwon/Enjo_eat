@@ -35,9 +35,12 @@ class LoginView(View):
         userid = request.POST.get("userid")
         password = request.POST.get("password")
         user = authenticate(username=userid, password=password)
-        login(request, user)
-        context["success"] = True
-        return JsonResponse(context)
+        if user:
+            login(request, user)
+            return JsonResponse(context, status=201)
+        
+        context["message"] = "아이디 혹은 비밀번호가 다릅니다."
+        return JsonResponse(context, status=400)
     
 
 class JoinView(View):
@@ -52,6 +55,16 @@ class JoinView(View):
     def post(self,request:HttpRequest,*args, **kwargs):
         userid = request.POST.get("userid")
         password = request.POST.get("password")
+        
+        if len(userid) < 5:
+            return JsonResponse({"message" : "아이디는 5글자 이상입니다."}, status=400)
+        if len(password) < 5:
+            return JsonResponse({"message" : "비밀번호는 5글자 이상입니다."}, status=400)
+        try:
+            User.objects.get(username = userid)
+            return JsonResponse({"message" : "중복된 아이디 입니다."}, status=400)
+        except:
+            pass
         try:
             with transaction.atomic():
                 User.objects.create_user(
@@ -59,9 +72,9 @@ class JoinView(View):
                     password=password
                 )
         except:
-            return redirect("/")
+            return JsonResponse({"message" : "가입 오류 발생.. 관리자에게 문의해주세요."}, status=400)
         
-        return redirect("/")
+        return JsonResponse({"message":"성공"}, status=200)
 
 
 class CheckDupleView(View):
@@ -72,14 +85,15 @@ class CheckDupleView(View):
         context = {}
         request.POST = json.loads(request.body)
         userid = request.POST.get("userid")
-        context["exist"] = True
-        context["success"] = True
+
         try:
             User.objects.get(username = userid)
         except:
             context["exist"] = False
+            return JsonResponse(context, status=200)
 
-        return JsonResponse(context)
+        context["exist"] = True
+        return JsonResponse(context, status=200)
 
 
 class MyPageView(LoginRequiredMixin, View):
