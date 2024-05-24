@@ -1,6 +1,13 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+class EateryType(models.Model):
+    type_name = models.CharField(max_length=20, null=False, db_column="type_name")
+    image_url = models.CharField(max_length=255, null=False, db_column="image_url")
+
+    class Meta:
+        db_table = "eatery_type"
+
 
 class Group(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -16,8 +23,8 @@ class Group(models.Model):
 class Eatery(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     group = models.ForeignKey(Group,on_delete=models.CASCADE)
+    eatery_type = models.ForeignKey(EateryType, on_delete=models.SET_NULL, null=True)
     eatery_name = models.CharField(max_length=30,db_column="eatery_name",null=False)
-    eatery_type = models.CharField(max_length=10,db_column="eatery_type",null=False)
     image = models.ImageField(upload_to="eatery_image/", null=True)
     crawling_image = models.CharField(max_length=128,db_column="crawling_image", null=True)
     eatery_real_location = models.CharField(max_length=128,db_column="eatery_real_location", null=False,default="")
