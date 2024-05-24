@@ -5,7 +5,8 @@ from django.template.loader import render_to_string
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db import transaction
-from website.models import Eatery,Reply,Group
+from django.urls import reverse
+from website.models import Eatery,Reply,Group, EateryType
 import json, time, requests
 
 from selenium import webdriver
@@ -14,6 +15,9 @@ from selenium.webdriver.common.by import By
 
 
 class EateryManageView(LoginRequiredMixin, View):
+    '''
+        음식점 목록
+    '''
     login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
@@ -26,45 +30,57 @@ class EateryManageView(LoginRequiredMixin, View):
 
 
 class EateryCreateView(LoginRequiredMixin, View):
+    '''
+        음식점 등록
+    '''
     login_url="website:login"
     def get(self, request:HttpRequest,*args, **kwargs):
         context = {}
         group_pk = kwargs.get("pk")
         group = Group.objects.get(pk=group_pk)
+        eatery_type = EateryType.objects.all()
         context["group_pk"] = group_pk
         context["group_location"] = group.group_location
+        context["eatery_type"] = eatery_type
 
         return render(request,"eatery/eatery_create.html",context)
 
     def post(self,request:HttpRequest,*args, **kwargs):
         group_pk = kwargs.get("pk")
         eatery_name = request.POST.get("eatery_name")
-        eatery_type = request.POST.get("eatery_type")
+        type_id = request.POST.get("type_id")
         eatery_location = request.POST.get("show_location")
         eatery_real_location = request.POST.get("eatery_real_location")
         image = request.FILES.get("user_image",None)
-        crawl_image = request.POST.get("crawl_image")
+        crawl_image = request.POST.get("crawl_image", None)
         comment = request.POST.get("comment")
 
-        group = get_object_or_404(Group,pk=group_pk)
-        user = get_object_or_404(User,username=request.user)
+        try:
+            group = Group.objects.get(pk = group_pk)
+            user = User.objects.get(username = request.user)
+            eatery_type = EateryType.objects.get(pk=type_id)
+        except:
+            return JsonResponse({"message" : "잘못된 id 정보"}, status=400)
 
-        with transaction.atomic():
-            eatery = Eatery(
-                group=group,
-                user=user,
-                eatery_name=eatery_name,
-                eatery_type=eatery_type,
-                eatery_location=eatery_location,
-                image=image,
-                eatery_real_location = eatery_real_location,
-                crawling_image = crawl_image,
-                comment = comment
-            )
+        try:
+            with transaction.atomic():
+                eatery = Eatery(
+                    group=group,
+                    user=user,
+                    eatery_name=eatery_name,
+                    eatery_type=eatery_type,
+                    eatery_location=eatery_location,
+                    image=image,
+                    eatery_real_location = eatery_real_location,
+                    crawling_image = crawl_image,
+                    comment = comment
+                )
+                eatery.save()
+        except:
+            return JsonResponse({"message" : "등록 오류.. 관리자에게 문의해주세요!"}, status=400)
 
-            eatery.save()
-
-        return redirect(f"/eatery/eatery_manage/{group.pk}")
+        return JsonResponse({"message" : reverse("website:eatery_manage", kwargs={"pk":group.pk})}, status=201)
+    
 
 class EateryDetailView(LoginRequiredMixin, View):
     login_url="website:login"

@@ -24,7 +24,7 @@
             <div class="container">
                 <a href="{% url 'website:eatery_manage' group_pk %}" type="button" class="btn btn-outline-dark">돌아가기</a>
                 <div class="section-header">
-                  <p>다양한 음식점을 추가해 주세요</p>
+                  <p>다양한 음식점을 추가해 주세요 !</p>
                 </div>
             </div>
         
@@ -37,27 +37,27 @@
                             </div>
                             <div class="info-item d-flex">
                                 <div>
-                                    <h4>등록자 : </h4>
-                                    <p>{{request.session.userid}}</p>
+                                    <h4>등록자</h4>
+                                    <p>{{request.user.username}}</p>
                                 </div>
                             </div><!-- End Info Item -->
 
                             <div class="info-item d-flex">
                                 <div>
-                                    <h4>음식점 이름 : </h4>
+                                    <h5>음식점 이름</h5>
                                     <div id="copy_eatery_name"></div>
                                 </div>
                             </div><!-- End Info Item -->
 
                             <div class="info-item d-flex">
                                 <div>
-                                    <h4>종류 : </h4>
+                                    <h5>종류</h5>
                                     <div id="copy_eatery_type"></div>
                                 </div>
                             </div><!-- End Info Item -->
                             <div class="info-item d-flex">
                                 <div>
-                                    <h4>위치 :</h4>
+                                    <h5>위치</h5>
                                 <div id="copy_show_location"></div>
                             </div>
                         </div><!-- End Info Item -->
@@ -73,13 +73,11 @@
                                 <input type="text" name="eatery_name" class="form-control" id="eatery_name" style="height:50px;" placeholder="음식점 이름을 작성해 주세요" required>
                             </div>
                             <div class="col-md-6 form-group">
-                                <select name="eatery_type" id="eatery_type" class="form-select" style="height:50px;border-radius:0px;">
+                                <select name="type_id" id="eatery_type" class="form-select" style="height:50px;border-radius:0px;">
                                     <option class="form-text" value="" disabled selected>종류를 골라주세요</option>
-                                    <option class="form-text" value="한식">한식</option>
-                                    <option class="form-text" value="양식">양식</option>
-                                    <option class="form-text" value="중식">중식</option>
-                                    <option class="form-text" value="일식">일식</option>
-                                    <option class="form-text" value="기타">기타</option>
+                                    {% for i in eatery_type %}
+                                    <option class="form-text" value="{{i.id}}">{{i.type_name}}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group mt-3">

@@ -1,4 +1,4 @@
-// document.addEventListener("DOMContentLoaded",function(){
+
     const eatery_name = document.getElementById("eatery_name");
     const show_location = document.getElementById("show_location");
     const eatery_real_location = document.getElementById("eatery_real_location");
@@ -50,16 +50,6 @@
       }
     }
 
-    // 등록하기
-    btn_submit.addEventListener("click",async() =>{
-        if(validation() == false){
-            return false;
-        }
-
-        regist_form.submit();
-        alert("등록 완료!")
-    })
-
 
     // 이미지 크롤링
     btn_image.addEventListener("click",async() =>{
@@ -70,7 +60,7 @@
         btn_image.disabled = true;
         crawl_image_title.readOnly = true;
         btn_image.value = "로딩중";
-        crawl_image_error.innerHTML = "<p style=color:green;>잠시만 기다려 주세요.....<p>";
+        crawl_image_error.innerHTML = "<p style=color:green;>잠시만 기다려 주세요...<p>";
         
         try{
             const response = await fetch(crawl_image_title.getAttribute("data-url")+"?crawl_image_title="+crawl_image_title.value,{
@@ -85,12 +75,9 @@
                 alert(result.message)
 
             }else{
-
-                
                 show_image.style.backgroundImage = `url('/${result.image_url}')`;
                 show_image.style.backgroundSize = "200px";
                 show_image.style.backgroundRepeat = "no-repeat";
-                
                 
                 crawl_image.value = result.image_url;
                 
@@ -99,7 +86,6 @@
 
                 btn_image.disabled = false;
                 btn_image.value = "다른 이미지" 
-                
             }
             
         }catch(error){
@@ -111,44 +97,97 @@
         }
     })
     
+    // 등록하기
+    btn_submit.addEventListener("click",async() =>{
+        if(validation() == false){
+            return false;
+        }
+
+        try{
+            const data = new FormData(document.getElementById("regist_form"));
+            if(!validation()){
+                return false;
+            }
+            const response = await fetch('',{
+                method:"POST",
+                headers:{'X-CSRFToken': csrftoken},
+                body:data
+            })
+            const result = await response.json();
+            if(response.status == 400){
+                login_error.innerHTML = "아이디 혹은 비밀번호가 다릅니다.";
+                login_error.style.color = "red";
+                userid.classList.add("is-invalid");
+                password.classList.add("is-invalid");
+            }else{
+                const urlSearch = new URLSearchParams(location.search);
+                const next_url = urlSearch.get("next")
+                location.href = !next_url ? "/" : next_url
+            }
+            
+        }catch(error){
+            alert("로그인 실패.. 관리자에게 문의해주세요.");
+        }
+    })
+
 
     // 유효성 검사
     function validation(){
         if(eatery_name.value == ""){
             eatery_name.focus();
+            eatery_name.classList.add("is-invalid");
             document.getElementById("copy_eatery_name").innerHTML = "<p style=color:red;>음식점 이름을 입력해주세요<p>";
             return false;
         }
         if(eatery_type.value == ""){
             eatery_type.focus();
+            eatery_type.classList.add("is-invalid");
             document.getElementById("copy_eatery_type").innerHTML = "<p style=color:red;>종류를 입력해주세요<p>";
             return false;
         }
         if(user_image.value == "" && crawl_image.value == ""){
+            user_image.classList.add("is-invalid");
             document.getElementById("image_error").innerHTML = "<p style=color:red;>이미지를 입력해주세요<p>";
             return false;
         }
         if(comment.value == ""){
             comment.focus();
+            comment.classList.add("is-invalid");
             document.getElementById("comment_error").innerHTML = "<p style=color:red;>한 줄평을 입력해주세요<p>";
             return false;
         }
         if(eatery_real_location.value == ""){
             show_location.focus();
+            show_location.classList.add("is-invalid");
             document.getElementById("copy_show_location").innerHTML = "<p style=color:red;>위치를 입력해주세요<p>";
             return false;
         }
 
-        
-        
         return true;
     }
 
     window.oninput = function(){
         crawl_image_error.innerHTML = "";
     }
+    eatery_name.oninput = function(){
+        eatery_name.classList.remove("is-invalid");
+    }
+    eatery_type.onchange = function(){
+        eatery_type.classList.remove("is-invalid")
+    }
+    user_image.oninput = function(){
+        user_image.classList.remove("is-invalid");
+    }
+    crawl_image.oninput = function(){
+        user_image.classList.remove("is-invalid")
+    }
     comment.oninput = function(){
+        user_image.classList.remove("is-invalid")
         document.getElementById("comment_error").innerHTML = "";
+    }
+    show_location.oninput = function(){
+        show_location.classList.remove("is-invalid")
+
     }
 
 
@@ -392,4 +431,3 @@
     }
 
         
-// })
