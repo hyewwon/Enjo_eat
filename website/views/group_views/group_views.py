@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.db import transaction
 from website.models import Group
 import json
@@ -16,7 +17,9 @@ class GroupManageView(LoginRequiredMixin, View):
     login_url="website:login"
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
-        groups = Group.objects.all()
+        groups = Group.objects.annotate(
+            count = Count("eatery")
+        ).values("id", "group_name", "group_comment", "group_location", "open_flag", "count")
         context["groups"] = groups
         return render(request,"eatery/group_manage.html",context)
 

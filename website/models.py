@@ -10,7 +10,7 @@ class EateryType(models.Model):
 
 
 class Group(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name="group")
     group_name = models.CharField(db_column="group",max_length=50,null=False)
     group_comment = models.TextField(db_column="group_comment",default="",null=True)
     group_location = models.CharField(db_column="location",max_length=50,default="")
@@ -21,9 +21,9 @@ class Group(models.Model):
 
 
 class Eatery(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    group = models.ForeignKey(Group,on_delete=models.CASCADE)
-    eatery_type = models.ForeignKey(EateryType, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name="eatery")
+    group = models.ForeignKey(Group,on_delete=models.CASCADE, related_name="eatery")
+    eatery_type = models.ForeignKey(EateryType, on_delete=models.SET_NULL, null=True, related_name="eatery")
     eatery_name = models.CharField(max_length=30,db_column="eatery_name",null=False)
     image = models.ImageField(upload_to="eatery_image/", null=True)
     crawling_image = models.CharField(max_length=128,db_column="crawling_image", null=True)

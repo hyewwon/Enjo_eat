@@ -4,15 +4,6 @@
 <link href="{% static 'eatery/css/group_manage.css' %}" rel="stylesheet">
 {% endblock stylesheets %}
 {% block content %}
-<style>
-    #group_box{
-        width:300px;
-        height:175px;
-        border:1px solid orange;
-        box-shadow: 5px 5px 5px lightgray;
-    }
-</style>
-<!-- ======= Breadcrumbs ======= -->
 <div class="breadcrumbs">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center">
@@ -24,10 +15,9 @@
     </div>
 
   </div>
-</div><!-- End Breadcrumbs -->
+</div>
 <section class="sample-page">
     <div class="container" data-aos="fade-up">
-        <!-- ======= Recent Blog Posts Section ======= -->
         <section id="recent-blog-posts" class="recent-blog-posts">
             <div class="container" data-aos="fade-up">
                 <a href="{% url 'website:group_create' %}" type="button" class="btn btn-warning" style="">테마 추가하기</a>
@@ -37,31 +27,26 @@
                 </div>
                 <div class="row">
                     {% for group in groups %}
-                        <div class="group-card col-3">
-                            <div class="group-card-details">
-                            <p class="text-title">{{group.group_name}}</p>
-                            <div class="text-body">
-                                <p>주요 지역 : {{group.group_location}}</p>
-                                <p>{{group.group_comment}}</p>
+                    <div class="col-3">
+                        <div class="group-card" onclick="location.href='{% url "website:eatery_manage" group.id %}'">
+                            <div class="group-content">
+                               <img class="group-image" src="{% static "assets/img/food/group_profile.png" %}" alt="{% static "assets/img/food/group_profile.png" %}" style="width:50px;">
+                              <div class="group-description">
+                                <p class="group-name"><strong>{{group.group_name}}</strong></p>
+                                <p class="group-location">{{group.group_location}}</p>
+                                <div class="group-comment">
+                                    {{group.group_comment}}
+                                </div>
+                                {% if group.open_flag %}
+                                <p class="group-info">공유 테마 | 음식점 : {{group.count}}</p>
+                                {% else %}
+                                <p class="group-info">비공유 테마 | 음식점 : {{group.count}}</p>
+                                {% endif %}
+                              </div>
                             </div>
-                            </div>
-                            <button class="group-card-button">등록된 메뉴 보기</button>
-                            {% comment %} <a class="group-card-button" href="javascript:;">등록된 메뉴 보기</a> {% endcomment %}
-                        </div>
-                    {% endfor %}
-                    {% comment %} {% for group in groups %}
-                    <div class="col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="200" id="group_box" style="margin:12px;">
-                        {% if request.session.userid == group.user.userid %}
-                            <a href="{% url 'website:group_edit' group.id %}" type="button" class="btn btn-outline-danger btn-sm mt-2" style="float: right;">수정</a>
-                        {% endif %}
-                        <div class="post-box">
-                            <h4 class="post-title">{{group.group_name}}</h4>
-                            <p class="form-text">주요 지역 : {{group.group_location}}</p>
-                            <p class="form-text">{{group.group_comment}}</p>
-                            <a href="{% url 'website:eatery_manage' group.id %}" class="readmore stretched-link"><span>등록된 메뉴 보러가기</span><i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
-                    {% endfor %} {% endcomment %}
+                    {% endfor %}
                 </div>
             </div>
         </section><!-- End Recent Blog Posts Section -->
