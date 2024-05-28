@@ -20,7 +20,7 @@
                     {% for eatery in random_eatery %}
                     <div class="card mb-5" data-url="{% url 'website:eatery_detail' eatery.id %}" data-eatery-name="{{eatery.eatery_name}}" data-eatery-image="{% if eatery.image %}{{eatery.image.url}}{% else %}/{{eatery.crawling_image}}{% endif %}">
                         <div id="card_front" class="common front" onclick="selectCard(this);">
-                            <img src="{% static 'assets/img/home.png' %}" alt="" class="front_image">
+                            <img src="{% static 'assets/img/food/home.png' %}" alt="" class="front_image">
                         </div>
                         <div id="card_back" class="common back">
                             <p class="form-text" style="color:rgb(232,122,68);">

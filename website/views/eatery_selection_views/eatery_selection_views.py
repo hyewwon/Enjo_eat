@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
-from website.models import Group, Eatery
+from website.models import Group, Eatery, EateryType
 from django.db.models import Q
 import random
 
@@ -23,6 +23,8 @@ class EateryAllSelectView(View):
     '''
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
+        eatery_type = EateryType.objects.values("id", "type_name")
+        context["eatery_type"] = eatery_type
         return render(request,"eatery_selection/group_all_select.html",context)
 
 
@@ -30,23 +32,23 @@ class GetGroupLocationView(View):
     '''
         음식점 위치 조회
     '''
-    def get(self,request:HttpRequest,*args, **kwargs):
+    def get(self, request:HttpRequest,*args, **kwargs):
         context = {}
         try:
             eatery_location = Eatery.objects.all().values("eatery_location")
         except:
             context["success"] = False
             context["message"] = "위치 가져오기 실패"
-
-            return JsonResponse(context)
-        temp = set()
+            return JsonResponse(context, content_type="application/json")
+        
+        location_list = set()
         for location in eatery_location:
-            temp.add(" ".join(location.get("eatery_location").split(" ")[:-1]))
+            location_list.add(" ".join(location.get("eatery_location").split(" ")[:-1]))
 
-        context["eatery_location"] = list(temp)
+        context["eatery_location"] = list(location_list)
         context["success"] = True
 
-        return JsonResponse(context)
+        return JsonResponse(context, content_type="application/json")
 
 
 class EaterySelectView(View):

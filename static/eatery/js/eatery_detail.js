@@ -1,4 +1,3 @@
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const reply = document.getElementById("reply");
 const btn_reply = document.getElementById("btn_reply");
 const userid = document.getElementById("userid");

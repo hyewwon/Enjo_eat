@@ -8,15 +8,41 @@ const eatery_location = document.getElementById("eatery_location");
 const search_result = document.getElementById("search_result");
 
 const checkbox_section = document.getElementById("checkbox_section");
-const input_section = document.getElementById("input_section");
-const url = eatery_location.getAttribute("data-url");
+const search_container = document.getElementById("search-container");
 const form  = document.getElementById("option_form");
+var location_list = []
+
+// 1. 음식점 종류 
+
+// checkbox event
+function checkSelectAll()  {
+  const checkboxes = document.querySelectorAll('input[name="eatery_type"]');
+  const checked = document.querySelectorAll('input[name="eatery_type"]:checked');
+  const selectAll = document.querySelector('input[name="select_all"]');
+  
+  if(checkboxes.length === checked.length)  {
+    selectAll.checked = true;
+  }else {
+    selectAll.checked = false;
+  }
+
+}
+
+function selectAll(selectAll)  {
+  const checkboxes = document.getElementsByName('eatery_type');
+  
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = selectAll.checked
+  })
+}
+
+
+// 2. 음식점 검색
 
 // 주소 검색
 document.addEventListener("DOMContentLoaded", async() =>{
-
   try{
-    const response = await fetch(url,{
+    const response = await fetch("/get-group-location/",{
       method:"GET"
     });
     const result = await response.json();
@@ -24,90 +50,52 @@ document.addEventListener("DOMContentLoaded", async() =>{
     if(result.success == false){
       alert(result.message);
     }else{
-      result.eatery_location;
+      location_list = result.eatery_location
     }
-
-    input_section.addEventListener("keyup",()=>{
-
-      var txt = eatery_location.value;
-      
-      let locations = [];
-      result.eatery_location.forEach(function(location){
-
-        if(txt == ""){
-          search_result.innerHTML = "<p class='form-text'>검색된 주소가 없습니다..</p>";
-
-        }else if(location.indexOf(txt.trim()) > - 1){
-          locations.push(location);
-        }
-      })
-
-      const set = new Set(locations)
-
-      if(locations.length == 0){
-        search_result.innerHTML = "<p class='form-text'>검색된 주소가 없습니다..</p>";
-      }else{
-        search_result.innerHTML = "";
-      }
-
-      set.forEach(function(location){
-        let div = document.createElement("div");
-        div.id ="txt_location_section";
-        div.class="col-2";
-        div.innerHTML = `<button id="txt_location" onclick="selectLocation(this);" value="${location}" class="btn">${location}</button>`;
-        search_result.appendChild(div);
-      })
-
-
-    })
     
   }catch(error){
-    alert(error);
+    alert("주소 검색 오류.. 관리자에게 문의해주세요!");
   }
 })
 
-function selectLocation(location){
-  eatery_location.value = location.value;
-  search_result.innerHTML = "";
+// 검색된 주소 표시
+search_container.addEventListener("keyup",()=>{
 
-}
+  var txt = eatery_location.value;
+  
+  let locations = [];
+  result.eatery_location.forEach(function(location){
 
+    if(txt == ""){
+      search_result.innerHTML = "<p class='form-text'>검색된 주소가 없습니다..</p>";
 
-btn_start.addEventListener("click", ()=>{
-  if(validation() == false){
-    return false;
-  }
-  form.submit();
-})
-
-function checkSelectAll(checkbox){
-    if(checkbox.checked == false){
-        selectall.checked = false;
+    }else if(location.indexOf(txt.trim()) > - 1){
+      locations.push(location);
     }
-}
+  })
 
-function selectAll(selectAll)  {
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = selectAll.checked;
-    })
+  const set = new Set(locations)
+
+  if(locations.length == 0){
+    search_result.innerHTML = "<p class='form-text'>검색된 주소가 없습니다..</p>";
+  }else{
+    search_result.innerHTML = "";
   }
 
+  set.forEach(function(location){
+    let div = document.createElement("div");
+    div.id ="txt_location_section";
+    div.class="col-2";
+    div.innerHTML = `<button id="txt_location" onclick="selectLocation(this);" value="${location}" class="btn">${location}</button>`;
+    search_result.appendChild(div);
+  })
 
-checkbox_section.addEventListener("change",function(){
-  document.getElementById("check_error").innerHTML = "";
-  checkbox_section.style.borderColor = "lightgray";
 })
 
 
-eatery_location.addEventListener("input",function(){
+// 3. 뽑기 시작
 
-  eatery_location.style.borderColor = "rgb(232,122,68)";
-
-  if(eatery_location.value == ""){
-    eatery_location.style.borderColor = "lightgray";
-  }
-})
-
+// 유효성 검사
 function validation(){
   count_check = 0;
 
@@ -126,6 +114,16 @@ function validation(){
   return true;
 
 }
+// 뽑기 시작
+btn_start.addEventListener("click", ()=>{
+  if(validation() == false){
+    return false;
+  }
+  form.submit();
+})
+
+
+
 
 
 

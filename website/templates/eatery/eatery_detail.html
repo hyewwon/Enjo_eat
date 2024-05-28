@@ -20,7 +20,7 @@
     <div class="container" data-aos="fade-up">
         <div class="container mb-5">
             <a href="{% url 'website:eatery_manage' group_pk %}" type="button" class="btn btn-outline-dark" style="">돌아가기</a>
-            {% if request.session.userid == eatery.user.userid %}
+            {% if request.user.username == eatery.user.username %}
                 <input type="hidden" value="{{eatery.id}}" id="eatery_id" name="eatery_id">
                 <a href="" id="btn_eatery_delete" type="button" class="btn btn-outline-danger" style="float: right; margin-left:10px;">삭제하기</a>
                 <a href="{% url 'website:eatery_edit' eatery.id %}" type="button" class="btn btn-outline-warning" style="float: right;">수정하기</a>
@@ -34,18 +34,17 @@
     
                 <div class="meta-top">
                     <ul>
-                        <li class="d-flex align-items-center"><i class="bi bi-person"></i>{{eatery.user.userid}}</li>
+                        <li class="d-flex align-items-center"><i class="bi bi-person"></i>{{eatery.user.username}}</li>
                     </ul>
                 </div><!-- End meta top -->
     
                 <div class="content">
                     <p>
-                        종류 : {{eatery.eatery_type}}
+                        종류 : {{eatery.eatery_type.type_name}}
                     </p>
                     <p>
                         위치 : {{eatery.eatery_location}}
                     </p>
-                    좋아요
                 </div><!-- End post content -->
             </div>
             <div class="col-4" style="margin:auto;text-align:center;">
@@ -54,7 +53,7 @@
                 {% elif eatery.crawling_image %}
                 <img src="/{{eatery.crawling_image}}" class="img-fluid" alt="" style="width:250px;">
                 {% else %}
-                <img src="{% static 'assets/img/home.png' %}" class="img-fluid" alt="" style="width:250px;">
+                <img src="/static/{{eatery.eatery_type.image_url}}" class="img-fluid" alt="" style="width:250px;">
                 {% endif %}
             </div>
         </article><!-- End blog post -->
@@ -89,8 +88,8 @@
                 <form action="" method="post" enctype="multipart/form-data" id="reply_form">
                     <div class="row">
                         <div class="col form-group">
-                            작성자 : {{request.session.userid}}
-                            <input type="hidden" name="userid" id="userid" data-url="{% url 'website:eatery_reply' eatery.id %}" value="{{request.session.userid}}">
+                            작성자 : {{request.user.username}}
+                            <input type="hidden" name="userid" id="userid" data-url="{% url 'website:eatery_reply' eatery.id %}" value="{{request.user.username}}">
                         </div>
                     </div>
                     <div class="row">
@@ -111,6 +110,6 @@
 </section>
 {% endblock content %}
 {% block script %}
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ece84f7a9edca4a7b0fa6dc9b18040bc&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=52be8de6ca78da298e8925f050df14e7&libraries=services"></script>
 <script src="{% static 'eatery/js/eatery_detail.js' %}"></script>
 {% endblock script %}

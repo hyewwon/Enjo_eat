@@ -165,7 +165,6 @@ class EateryReplyView(View):
             reply.save()
         except:
             context["success"] = False
-
             return JsonResponse(context)
 
         context["success"] = True

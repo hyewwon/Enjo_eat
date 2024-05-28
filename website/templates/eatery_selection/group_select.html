@@ -1,40 +1,50 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<style>
-    #group_box{
-        width:300px;
-        height:150px;
-        border:1px solid orange;
-        box-shadow: 5px 5px 5px lightgray;
-        padding:1em;
-    }
-</style>
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'eatery/css/group_select.css' %}">
+{% endblock stylesheets %}
 <section class="sample-page">
     <div class="container" data-aos="fade-up">
-        <!-- ======= Recent Blog Posts Section ======= -->
         <section id="recent-blog-posts" class="recent-blog-posts">
             <div class="container" data-aos="fade-up">
                 <div class="section-header">
                     <h2>Choice</h2>
                     <p>먼저 테마를 선택해 주세요!!</p>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="200" id="group_box" style="margin:12px; border:1px solid red;">
-                        <div class="post-box" style="text-align:center;">
-                            <h3 class="post-title">옵션 정하기</h3>
-                            <p class="form-text mb-1" style="color:red;">등록된 모든 식당들 중에서<br>직접 옵션을 설정합니다.</p>
-                            <a href="{% url 'website:group_all_select' %}" class="readmore stretched-link"></a>
-                        </div>
+                <div class="row mt-5">
+                    <div class="col-4">
+                        <div class="group-card">
+                            <div class="content custom-content">
+                                <p class="group-title" style="color:#FF4F00;">직접 옵션 선택</p>
+                                <div class="group-location">전 지역</div>
+                                <div class="group-comment">
+                                    등록된 모든 식당들 중에서 <br> 직접 옵션을 설정합니다.
+                                </div>
+                                <a type="button" class="pushable" href="{% url "website:group_all_select" %}">
+                                    <span class="shadow"></span>
+                                    <span class="edge custom-edge"></span>
+                                    <span class="front custom-front">START!</span>
+                                </a>
+                            </div>
+                          </div>
                     </div>
                     {% for group in groups %}
-                    <div class="col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="200" id="group_box" style="margin:12px;">
-                        <div class="post-box" style="text-align:center;">
-                            <h3 class="post-title">{{group.group_name}}</h3>
-                            <p class="form-text">주요 지역 : {{group.group_location}}</p>
-                            <p class="form-text mb-1">{{group.group_comment}}</p>
-                            <a href="{% url 'website:eatery_select' %}?group_id={{group.id}}" class="readmore stretched-link"></a>
-                        </div>
+                    <div class="col-4">
+                        <div class="group-card">
+                            <div class="content normal-content">
+                                <p class="group-title">{{group.group_name}}</p>
+                                <div class="group-location">{{group.group_location}}</div>
+                                <div class="group-comment">
+                                    {{group.group_comment}}
+                                </div>
+                                <a type="button" class="pushable" href="{% url "website:eatery_select" %}?group_id={{group.id}}">
+                                    <span class="shadow"></span>
+                                    <span class="edge normal-edge"></span>
+                                    <span class="front normal-front">START!</span>
+                                </a>
+                            </div>
+                          </div>
                     </div>
                     {% endfor %}
                 </div>
