@@ -21,22 +21,22 @@ urlpatterns = [
     path("my-eatery/<int:group_id>/", MyEateryView.as_view(), name="my_eatery"),
 
     # group
-    path("group_manage/",GroupManageView.as_view(), name="group_manage"),
-    path("group_create/",GroupCreateView.as_view(), name="group_create"),
-    path("group_edit/<int:pk>/",GroupEditView.as_view(),name="group_edit"),
+    path("group-manage/",GroupManageView.as_view(), name="group_manage"),
+    path("group-create/",GroupCreateView.as_view(), name="group_create"),
+    path("group-edit/<int:pk>/",GroupEditView.as_view(),name="group_edit"),
     
     # eatery
-    path("eatery_manage/<int:pk>/",EateryManageView.as_view(),name="eatery_manage"),
-    path("eatery_create/<int:pk>/",EateryCreateView.as_view(),name="eatery_create"),
-    path("eatery_edit/<int:pk>/",EateryEditView.as_view(),name="eatery_edit"),
-    path("eatery_detail/<int:pk>/",EateryDetailView.as_view(),name="eatery_detail"),
-    path("eatery_reply/<int:pk>/",EateryReplyView.as_view(),name="eatery_reply"),
-    path("eatery_image_crawling/",crawlingImage,name="image_crawling"),
+    path("eatery-manage/<int:pk>/",EateryManageView.as_view(),name="eatery_manage"),
+    path("eatery-create/<int:pk>/",EateryCreateView.as_view(),name="eatery_create"),
+    path("eatery-edit/<int:pk>/",EateryEditView.as_view(),name="eatery_edit"),
+    path("eatery-detail/<int:pk>/",EateryDetailView.as_view(),name="eatery_detail"),
+    path("eatery-reply/<int:pk>/",EateryReplyView.as_view(),name="eatery_reply"),
+    path("eatery-image_crawling/",crawlingImage,name="image_crawling"),
 
     #eatery selection
-    path("group_select/",GroupSelectView.as_view(), name="group_select"),
-    path("group_all_select/",EateryAllSelectView.as_view(),name="group_all_select"),
-    path("get_group_location/",GetGroupLocationView.as_view(),name="get_group_location"),
-    path("eatery_select/",EaterySelectView.as_view(),name="eatery_select"),
+    path("group-select/",GroupSelectView.as_view(), name="group_select"),
+    path("group-all-select/",EateryAllSelectView.as_view(),name="group_all_select"),
+    path("get-group-location/",GetGroupLocationView.as_view(),name="get_group_location"),
+    path("eatery-select/",EaterySelectView.as_view(),name="eatery_select"),
 
 ] 

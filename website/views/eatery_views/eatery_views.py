@@ -22,7 +22,7 @@ class EateryManageView(LoginRequiredMixin, View):
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
         group_pk = kwargs.get("pk")
-        eatery = Eatery.objects.filter(group=group_pk)
+        eatery = Eatery.objects.filter(group=group_pk).values("id", "eatery_type__type_name","eatery_type__image_url", "eatery_name", "image", "crawling_image", "eatery_location", "comment")
         context["group_pk"] = group_pk
         context["eatery"] = eatery
 

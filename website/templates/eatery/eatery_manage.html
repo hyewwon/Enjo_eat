@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block stylesheets %}
+<link href="{% static 'eatery/css/eatery_manage.css' %}" rel="stylesheet">
+{% endblock stylesheets %}
 {% block content %}
-<!-- ======= Breadcrumbs ======= -->
 <div class="breadcrumbs">
   <div class="container">
 
@@ -14,10 +16,9 @@
     </div>
 
   </div>
-</div><!-- End Breadcrumbs -->
+</div>
 <section class="sample-page">
   <div class="container" data-aos="fade-up">
-<!-- ======= Recent Blog Posts Section ======= -->
   <section id="recent-blog-posts" class="recent-blog-posts">
     <div class="container" data-aos="fade-up">
       {% if eatery %}
@@ -30,26 +31,27 @@
       </div>
       <div class="row">
       {% if eatery %}
-        {% for e in eatery %}
-        <div class="col-lg-3 mb-5" data-aos="fade-up" data-aos-delay="200">
-          <div class="post-box">
-              <div class="post-img">
-                {% if e.image  %}
-                <img src="{{e.image.url}}" class="img-fluid" alt="">
-                {% elif e.crawling_image %}
-                <img src="/{{e.crawling_image}}" class="img-fluid" alt=""> 
-                {% else %}
-                <img src="{% static 'assets/img/home.png' %}" class="img-fluid" alt="">
-                {% endif %}
-              </div>
-              <h3 class="post-title"><small>{{e.eatery_name}}</small></h3>
-              <div class="meta">
-                <span class="post-author">{{e.eatery_type}}</span>
-              </div>
-              <a href="{% url 'website:eatery_detail' e.pk %}" class="readmore stretched-link"><span>자세히 보러가기</span><i class="bi bi-arrow-right"></i></a>
-            </div>
+      {% for i in eatery %}
+      <div class="col-3">
+        <div class="eatery-card">
+          <div class="eatery-image-container">
+            {% if i.image %}
+            <img class="eatery-image" src='{% static "assets/img/food/korean.png" %}'>
+            {% elif i.crawling_image %}
+            <img class="eatery-image" src='{% static "assets/img/food/korean.png" %}'>
+            {% else %}
+            <img class="eatery-image" src="/static/{{i.eatery_type__image_url}}">
+            {% endif %}
           </div>
-        {% endfor %}
+          <p class="eatery-name">{{i.eatery_name}}</p>
+          <div class="eatery-content">
+            <button class="button"><i class="bi bi-shop"></i> 양식</button>
+            <button class="button"><i class="bi bi-chat-dots"></i> 11</button>
+          </div>
+          <a type="button" class="eatery-btn" href="{% url "website:eatery_detail" i.id %}">구경하기</a>
+        </div>
+      </div>
+      {% endfor %}
       {% else %}
       <div class="text-center gy-5 gx-lg-5 mt-5 form-control" style="padding:50px;">
         <p class="form-text" style="font-size:large">
