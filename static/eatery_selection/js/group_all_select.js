@@ -1,13 +1,11 @@
 const btn_start = document.getElementById("btn_start");
-const search_location = document.getElementById("search_location");
 
 const selectall = document.querySelector("input[name='all']");
 const check = document.querySelectorAll("input[name='eatery_type']:checked")
 const checkboxes = document.getElementsByName('eatery_type');
 const eatery_location = document.getElementById("eatery_location");
-const search_result = document.getElementById("search_result");
+const search_result = document.getElementById("search-result");
 
-const checkbox_section = document.getElementById("checkbox_section");
 const search_container = document.getElementById("search-container");
 const form  = document.getElementById("option_form");
 var location_list = []
@@ -63,34 +61,47 @@ search_container.addEventListener("keyup",()=>{
 
   var txt = eatery_location.value;
   
-  let locations = [];
-  result.eatery_location.forEach(function(location){
+  let matched_locations = [];
+  location_list.forEach(function(location){
 
     if(txt == ""){
-      search_result.innerHTML = "<p class='form-text'>검색된 주소가 없습니다..</p>";
+      search_result.innerHTML = "<p>검색된 주소가 없습니다.</p>";
 
     }else if(location.indexOf(txt.trim()) > - 1){
-      locations.push(location);
+      matched_locations.push(location);
     }
   })
 
-  const set = new Set(locations)
+  const set = new Set(matched_locations)
 
-  if(locations.length == 0){
-    search_result.innerHTML = "<p class='form-text'>검색된 주소가 없습니다..</p>";
+  if(matched_locations.length == 0){
+    search_result.innerHTML = "<p>검색된 주소가 없습니다.</p>";
   }else{
     search_result.innerHTML = "";
   }
 
+  var cnt = 0
   set.forEach(function(location){
+    cnt += 1
     let div = document.createElement("div");
-    div.id ="txt_location_section";
-    div.class="col-2";
-    div.innerHTML = `<button id="txt_location" onclick="selectLocation(this);" value="${location}" class="btn">${location}</button>`;
+    div.class="result-container";
+
+    div.innerHTML = `
+      <div class="custom-radio" onclick="setLocationValue('${location}');">
+      <input type="radio" id="radio-${cnt}" value="${location}" name="tabs">
+      <label class="radio-label" for="radio-1">
+      <div class="radio-circle"></div>
+      <span class="radio-text">${location}</span></label></div>
+      `;
     search_result.appendChild(div);
   })
 
 })
+
+
+function setLocationValue(value){
+  eatery_location.value = value;
+}
 
 
 // 3. 뽑기 시작
@@ -98,7 +109,6 @@ search_container.addEventListener("keyup",()=>{
 // 유효성 검사
 function validation(){
   count_check = 0;
-
   for(i=0;i<checkboxes.length;i++){
     if(checkboxes[i].checked){
       count_check += 1;
@@ -106,8 +116,6 @@ function validation(){
   }
   
   if(count_check == 0){
-    document.getElementById("check_error").innerHTML = "<p style='color:red;'>종류를 하나 이상 선택해 주세요</p>";
-    checkbox_section.style.borderColor = "red";
     return false;
   }
 
