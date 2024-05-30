@@ -32,13 +32,13 @@
       <div class="row">
       {% if eatery %}
       {% for i in eatery %}
-      <div class="col-3">
+      <div class="col-3" style="margin-bottom:50px;">
         <div class="eatery-card">
           <div class="eatery-image-container">
             {% if i.image %}
-            <img class="eatery-image" src='{% static "assets/img/food/korean.png" %}'>
+            <img class="eatery-image-container" src="/media/{{i.image}}">
             {% elif i.crawling_image %}
-            <img class="eatery-image" src='{% static "assets/img/food/korean.png" %}'>
+            <img class="eatery-image-container" src="{{e.crawling_image}}">
             {% else %}
             <img class="eatery-image" src="/static/{{i.eatery_type__image_url}}">
             {% endif %}
@@ -46,7 +46,7 @@
           <p class="eatery-name">{{i.eatery_name}}</p>
           <div class="eatery-content">
             <button class="button"><i class="bi bi-shop"></i> 양식</button>
-            <button class="button"><i class="bi bi-chat-dots"></i> 11</button>
+            <button class="button"><i class="bi bi-chat-dots"></i> {{i.comment_cnt}}</button>
           </div>
           <a type="button" class="eatery-btn" href="{% url "website:eatery_detail" i.id %}">구경하기</a>
         </div>

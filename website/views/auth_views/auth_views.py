@@ -15,7 +15,7 @@ class HomeView(View):
     '''
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
-        eatery = Eatery.objects.all().values("id","user__username","comment","eatery_name","image","crawling_image")
+        eatery = Eatery.objects.all().values("id","user__username","comment","eatery_name","image","crawling_image", "eatery_type__image_url").order_by("-id")[:5]
         context["eatery"] = eatery
 
         return render(request,"home.html",context)

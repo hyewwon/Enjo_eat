@@ -1,0 +1,19 @@
+#swiper{
+    border: 2px solid #FF8C00;
+    padding : 10px 0px 10px 10px;
+    background-color: #FFEFD5;
+    box-shadow: 5px 5px 10px;
+
+}
+
+#comment{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 35%;
+}
+
+.eatery-image{
+    width: 250px;
+    height: 250px;
+}

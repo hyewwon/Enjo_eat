@@ -89,7 +89,7 @@ search_container.addEventListener("keyup",()=>{
     div.innerHTML = `
       <div class="custom-radio" onclick="setLocationValue('${location}');">
       <input type="radio" id="radio-${cnt}" value="${location}" name="tabs">
-      <label class="radio-label" for="radio-1">
+      <label class="radio-label" for="radio-${cnt}">
       <div class="radio-circle"></div>
       <span class="radio-text">${location}</span></label></div>
       `;

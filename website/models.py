@@ -36,8 +36,8 @@ class Eatery(models.Model):
 
 
 class Reply(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    eatery = models.ForeignKey(Eatery,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name="reply")
+    eatery = models.ForeignKey(Eatery,on_delete=models.CASCADE, related_name="reply")
     reply = models.TextField(db_column="reply",default="",null=True)
     created_at = models.DateTimeField(null=True, db_column='created_at', auto_now_add=True)
 

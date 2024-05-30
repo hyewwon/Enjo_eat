@@ -18,7 +18,7 @@
                 {% if random_eatery %}
                 <div id="card_section" class="row">
                     {% for eatery in random_eatery %}
-                    <div class="card mb-5" data-url="{% url 'website:eatery_detail' eatery.id %}" data-eatery-name="{{eatery.eatery_name}}" data-eatery-image="{% if eatery.image %}{{eatery.image.url}}{% else %}/{{eatery.crawling_image}}{% endif %}">
+                    <div class="card mb-5" data-url="{% url 'website:eatery_detail' eatery.id %}" data-eatery-name="{{eatery.eatery_name}}" data-eatery-image="{% if eatery.image %}/media/{{eatery.image}}{% else %}/{{eatery.crawling_image}}{% endif %}">
                         <div id="card_front" class="common front" onclick="selectCard(this);">
                             <img src="{% static 'assets/img/food/home.png' %}" alt="" class="front_image">
                         </div>
@@ -28,7 +28,7 @@
                             </p>
                             <p>
                                 {% if eatery.image %}
-                                <img id="back_image" src="{{eatery.image.url}}" alt="">
+                                <img id="back_image" src="/media/{{eatery.image}}" alt="">
                                 {% elif eatery.crawling_image %}
                                 <img id="back_image" src="/{{eatery.crawling_image}}" alt="">
                                 {% endif %}

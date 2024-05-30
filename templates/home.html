@@ -1,14 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block stylesheets %}
-<style>
-  #comment{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    width:35%
-  }
-</style>
+<link href="{% static "user/css/home.css" %}" rel="stylesheet">
 {% endblock stylesheets %}
 {% block content %}
 <section id="hero-animated" class="hero-animated d-flex align-items-center">
@@ -21,7 +14,6 @@
         </div>
       </div>
     </section>
-    <!-- ======= About Section ======= -->
     <hr>
     <section id="about" class="about">
       <div class="container" data-aos="fade-up">
@@ -38,42 +30,41 @@
         <div class="row g-4 g-lg-5" data-aos="fade-up" data-aos-delay="200">
           
           <div class="col-lg-15">
-          <!-- ======= Testimonials Section ======= -->
-          <section id="testimonials" class="testimonials">
-              <div class="container" data-aos="fade-up">
-        
-                <div class="testimonials-slider swiper">
-                  <div class="swiper-wrapper">
-                    {% for e in eatery %}
-                      <div class="swiper-slide">
-                        <div class="testimonial-item row">
-                          <div class="col-4">
-                            {% if e.image %}
-                            <img src="{{e.image.url}}" alt="" style="width:250px;height:250px;">
-                            {% elif e.crawling_image %}
-                            <img src="/{{e.crawling_image}}" alt="" style="width:250px;height:250px;">
-                            {% endif %}
-                          </div>
-                          <div id="comment" class="col-8">
-                            <h3 class="mb-3">{{e.eatery_name}}</h3>
-                            <p>{{e.user__userid}}</p>
-                            <p>
-                              <i class="bi bi-quote quote-icon-left"></i>
-                              {{e.comment}}
-                              <i class="bi bi-quote quote-icon-right"></i>
-                            </p>
-                            <div class="mt-4">
-                              <a href="{% url 'website:eatery_detail' e.id %}" type="button" class="btn btn-outline-light">자세히 보기</a>
-                            </div>
+            <div class="container" data-aos="fade-up">
+      
+              <div class="testimonials-slider swiper" id="swiper">
+                <div class="swiper-wrapper">
+                  {% for e in eatery %}
+                    <div class="swiper-slide">
+                      <div class="testimonial-item row">
+                        <div class="col-4">
+                          {% if e.image %}
+                          <img src="/media/{{e.image}}" class="eatery-image" alt="">
+                          {% elif e.crawling_image %}
+                          <img src="/static/{{e.crawling_image}}" class="eatery-image" alt="">
+                          {% else %}
+                          <img src="/static/{{e.eatery_type__image_url}}" class="eatery-image">
+                          {% endif %}
+                        </div>
+                        <div id="comment" class="col-8" style="color:gray;">
+                          <h3 class="mb-3" style="color:black;">{{e.eatery_name}}</h3>
+                          <p>{{e.user__userid}}</p>
+                          <p>
+                            <i class="bi bi-quote quote-icon-left" style="color:gray;"></i>
+                            {{e.comment}}
+                            <i class="bi bi-quote quote-icon-right" style="color:gray"></i>
+                          </p>
+                          <div class="mt-4">
+                            <a href="{% url 'website:eatery_detail' e.id %}" type="button" class="btn btn-outline-dark">자세히 보기</a>
                           </div>
                         </div>
-                      </div>  
-                    {% endfor %}
-                  </div>
-                  <div class="swiper-pagination"></div>
+                      </div>
+                    </div>  
+                  {% endfor %}
                 </div>
+                <div class="swiper-pagination"></div>
               </div>
-            </section>
+            </div>
         </div>
       </div>
     </div>

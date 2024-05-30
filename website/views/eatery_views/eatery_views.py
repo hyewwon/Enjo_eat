@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.urls import reverse
+from django.db.models import Count
 from website.models import Eatery,Reply,Group, EateryType
 import json, time, requests
 
@@ -22,7 +23,9 @@ class EateryManageView(LoginRequiredMixin, View):
     def get(self,request:HttpRequest,*args, **kwargs):
         context = {}
         group_pk = kwargs.get("pk")
-        eatery = Eatery.objects.filter(group=group_pk).values("id", "eatery_type__type_name","eatery_type__image_url", "eatery_name", "image", "crawling_image", "eatery_location", "comment")
+        eatery = Eatery.objects.filter(group=group_pk).annotate(
+            comment_cnt = Count("reply__reply")
+        ).values("id", "eatery_type__type_name","eatery_type__image_url", "eatery_name", "image", "crawling_image", "eatery_location", "comment_cnt")
         context["group_pk"] = group_pk
         context["eatery"] = eatery
 
